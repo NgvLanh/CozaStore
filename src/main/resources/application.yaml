@@ -1,0 +1,8 @@
+spring:
+  application:
+    name: CozaStore
+
+  thymeleaf:
+    cache: false
+#    prefix: classpath:/templates/
+#    suffix: .html
