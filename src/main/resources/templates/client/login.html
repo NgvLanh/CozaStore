@@ -1,0 +1,94 @@
+<!-- Title page -->
+<section class="bg-img1 txt-center p-lr-15 p-tb-92" style="background-image: url('/client/images/bg-01.jpg');">
+    <h2 class="ltext-105 cl0 txt-center">
+        Information
+    </h2>
+</section>
+
+
+<!-- Login Page -->
+<section class="bg0 p-t-104 p-b-116">
+    <div class="container">
+        <div class="flex-w justify-content-center">
+            <div class="size-210 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md">
+                <form id="login-form">
+                    <h4 class="mtext-105 cl2 txt-center p-b-30">
+                        Login to Your Account
+                    </h4>
+
+                    <div class="bor8 m-b-20 how-pos4-parent">
+                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="username"
+                               id="username"
+                               placeholder="Username or Email">
+                        <img class="how-pos4 pointer-none" src="/client/images/icons/mail.png" alt="ICON">
+                    </div>
+
+                    <div class="bor8 m-b-20 how-pos4-parent">
+                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="password" name="password"
+                               id="password"
+                               placeholder="Password">
+                        <img class="how-pos4 pointer-none" src="/client/images/icons/password.png" alt="ICON">
+                    </div>
+
+                    <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer"
+                            type="submit">
+                        Login
+                    </button>
+
+                    <div class="txt-center p-t-20">
+                        <p class="stext-115 cl6 flex-b justify-content-between">
+                            <span>
+                                Don't have an account?
+                            <a href="/register" class="cl1 hov-cl2">Sign Up</a>
+                            </span>
+                            <a href="#" class="stext-115 cl1 hov-cl2">
+                                Forgot Password?
+                            </a>
+                        </p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $('#login-form').submit(async function (e) {
+        e.preventDefault();
+        const username = $('#username').val().trim();
+        const password = $('#password').val().trim();
+
+        if (!username || !password) {
+            swal('Login failed', "Please enter both username and password", "error");
+            return;
+        }
+
+        await login(username, password);
+    });
+
+    const login = async (username, password) => {
+        try {
+            const response = await axios.post('/api/auth/login',
+                {username, password},
+            );
+            console.log(response.data)
+            if (!response?.data?.success) {
+                swal('Login failed', "Unexpected error occurred!", "error");
+                return;
+            }
+
+            const { user } = response.data.data;
+            const roles = user.roles || [];
+
+            await swal('Login success', "You have successfully logged in!", "success");
+
+            window.location.href = roles.some(role => role.name.toUpperCase() !== 'CLIENT') ? '/admin' : '/';
+        } catch (e) {
+            console.log(e)
+            swal('Login failed', "Username or password is incorrect", "error");
+        }
+    };
+
+</script>
+
+
