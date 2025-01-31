@@ -14,7 +14,7 @@
                         Help & FAQs
                     </a>
 
-                    <a href="#" class="flex-c-m trans-04 p-lr-25">
+                    <a href="#" class="my-account flex-c-m trans-04 p-lr-25">
                         My Account
                     </a>
 
@@ -135,7 +135,7 @@
                         Help & FAQs
                     </a>
 
-                    <a href="#" class="flex-c-m p-lr-10 trans-04">
+                    <a href="#" class="my-account flex-c-m p-lr-10 trans-04">
                         My Account
                     </a>
 
@@ -198,3 +198,21 @@
         </div>
     </div>
 </header>
+
+
+<script>
+    const myAccounts = $('.my-account');
+    const accessToken = sessionStorage.getItem('accessToken');
+
+    [...myAccounts].forEach(acc => {
+        acc.addEventListener('click', () => {
+            if (accessToken && accessToken.length > 0) {
+                acc.href = '/profile';
+            }else {
+                acc.href = '/login';
+            }
+        })
+    });
+
+
+</script>

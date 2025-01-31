@@ -6,3 +6,20 @@ spring:
     cache: false
 #    prefix: classpath:/templates/
 #    suffix: .html
+
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+#    show-sql: true
+
+config:
+  admin:
+    username: admin@gmail.com
+    password: admin
+#    username: ${ADMIN_USERNAME}
+#    password: ${ADMIN_PASSWORD}
