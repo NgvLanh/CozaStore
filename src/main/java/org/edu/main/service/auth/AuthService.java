@@ -95,9 +95,9 @@ public class AuthService {
 
                     Cookie cookie = new Cookie("accessToken", token);
                     cookie.setHttpOnly(true);
-                    cookie.setSecure(true);  // Set to true if using HTTPS
+                    cookie.setSecure(true);
                     cookie.setPath("/");
-                    cookie.setMaxAge(60 * 60); // Expire the cookie immediately
+                    cookie.setMaxAge(60 * 60);
                     response.addCookie(cookie);
 
                     UserResponse userResponse =
@@ -110,5 +110,14 @@ public class AuthService {
             }
         }
         return ResponseEntity.ok(ApiResponse.ERROR(Map.of("System", "Login failed")));
+    }
+
+    public void LOGOUT(HttpServletResponse response) {
+        Cookie cookie = new Cookie("accessToken", null);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
     }
 }

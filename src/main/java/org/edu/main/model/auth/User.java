@@ -34,9 +34,4 @@ public class User {
     @OneToMany(mappedBy = "user")
     List<User_Role> roles;
 
-//    public String getPassword() {
-//        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-//        return encoder.encode(password);
-//    }
-
 }

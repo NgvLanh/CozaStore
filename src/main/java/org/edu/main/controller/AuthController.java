@@ -28,4 +28,9 @@ public class AuthController {
     private ResponseEntity<?> REGISTER(@Valid @RequestBody RegisterRequest request) {
         return authService.REGISTER(request);
     }
+
+    @PostMapping("/logout")
+    private void LOGOUT(HttpServletResponse response) {
+        authService.LOGOUT(response);
+    }
 }

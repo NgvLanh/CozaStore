@@ -53,6 +53,14 @@
 </section>
 
 <script>
+    window.addEventListener('DOMContentLoaded', () => {
+        let urlParams = new URLSearchParams(window.location.search);
+        let paramValue = urlParams.get('msg');
+        if (paramValue) {
+            swal('Access Denied', paramValue, "error");
+        }
+    });
+
     $('#login-form').submit(async function (e) {
         e.preventDefault();
         const username = $('#username').val().trim();
@@ -71,13 +79,12 @@
             const response = await axios.post('/api/auth/login',
                 {username, password},
             );
-            console.log(response.data)
             if (!response?.data?.success) {
                 swal('Login failed', "Unexpected error occurred!", "error");
                 return;
             }
 
-            const { user } = response.data.data;
+            const {user} = response.data.data;
             const roles = user.roles || [];
 
             await swal('Login success', "You have successfully logged in!", "success");
@@ -88,7 +95,6 @@
             swal('Login failed', "Username or password is incorrect", "error");
         }
     };
-
 </script>
 
 
