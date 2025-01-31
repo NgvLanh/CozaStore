@@ -201,18 +201,16 @@
 
 
 <script>
-    const myAccounts = $('.my-account');
-    const accessToken = sessionStorage.getItem('accessToken');
-
-    [...myAccounts].forEach(acc => {
-        acc.addEventListener('click', () => {
-            if (accessToken && accessToken.length > 0) {
-                acc.href = '/profile';
-            }else {
-                acc.href = '/login';
-            }
-        })
-    });
-
-
+    // const myAccounts = $('.my-account');
+    // const accessToken = sessionStorage.getItem('accessToken');
+    // console.log(document.cookie);
+    // [...myAccounts].forEach(acc => {
+    //     acc.addEventListener('click', () => {
+    //         if (accessToken && accessToken.length > 0) {
+    //             acc.href = '/profile';
+    //         } else {
+    //             acc.href = '/login';
+    //         }
+    //     })
+    // });
 </script>

@@ -68,8 +68,8 @@
                                 <p class="mb-0 fs-3">My Task</p>
                             </a>
                             <a
-                                    href="./authentication-login.html"
                                     class="btn btn-outline-primary mx-3 mt-2 d-block"
+                                    onclick="logout()"
                             >Logout</a
                             >
                         </div>
@@ -79,3 +79,10 @@
         </div>
     </nav>
 </header>
+
+<script>
+    async function logout() {
+        await axios.post('/api/auth/logout');
+        window.location.href = '/login';
+    }
+</script>
