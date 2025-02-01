@@ -11,36 +11,41 @@
     <div class="container">
         <div class="flex-w justify-content-center">
             <div class="size-210 bor10 p-lr-70 p-t-55 p-b-70 p-lr-15-lg w-full-md">
-                <form>
+                <form id="register-form">
                     <h4 class="mtext-105 cl2 txt-center p-b-30">
                         Create Your Account
                     </h4>
 
                     <div class="bor8 m-b-20 how-pos4-parent">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="username"
+                               id="username"
                                placeholder="Username">
                         <img class="how-pos4 pointer-none" src="/client/images/icons/user.png" alt="ICON">
                     </div>
 
                     <div class="bor8 m-b-20 how-pos4-parent">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="email" name="email"
+                               id="email"
                                placeholder="Email Address">
                         <img class="how-pos4 pointer-none" src="/client/images/icons/mail.png" alt="ICON">
                     </div>
 
                     <div class="bor8 m-b-20 how-pos4-parent">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="password" name="password"
+                               id="password"
                                placeholder="Password">
                         <img class="how-pos4 pointer-none" src="/client/images/icons/password.png" alt="ICON">
                     </div>
 
                     <div class="bor8 m-b-20 how-pos4-parent">
                         <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="password" name="confirm_password"
+                               id="confirm_password"
                                placeholder="Confirm Password">
                         <img class="how-pos4 pointer-none" src="/client/images/icons/password.png" alt="ICON">
                     </div>
 
-                    <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
+                    <button type="submit"
+                            class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">
                         Sign Up
                     </button>
 
@@ -55,3 +60,58 @@
         </div>
     </div>
 </section>
+
+<script>
+    $('#register-form').submit(async (e) => {
+        e.preventDefault();
+
+        const username = $('#username').val().trim();
+        const email = $('#email').val().trim();
+        const password = $('#password').val().trim();
+        const confirmPassword = $('#confirm_password').val().trim();
+
+        if (!username || !email || !password || !confirmPassword) {
+            swal('Register failed', "Please enter all required information", "error");
+            return;
+        }
+
+        if (username.length < 3 || username.length > 20) {
+            swal('Register failed', "Username must be between 3 and 20 characters", "error");
+            return;
+        }
+
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            swal('Register failed', "Invalid email format", "error");
+            return;
+        }
+
+        if (password.length < 6) {
+            swal('Register failed', "Password must be at least 6 characters", "error");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            swal('Register failed', "Passwords do not match", "error");
+            return;
+        }
+
+        await register(username, email, password);
+    });
+
+    const register = async (username, email, password) => {
+        try {
+            const response = await axios.post('/api/auth/register', {username, email, password});
+            if (response.data?.success) {
+                swal('Success', "Registration successful!", "success")
+                    .then(() => {
+                        window.location.href = "/login";
+                    });
+            } else {
+                swal('Register failed', response.data?.message || "Something went wrong", "error");
+            }
+        } catch (error) {
+            swal('Register failed', error.response?.data?.message || "An error occurred", "error");
+        }
+    };
+
+</script>

@@ -35,7 +35,7 @@ public class AuthInterceptor implements HandlerInterceptor {
                 .orElse(null);
 
         if (accessToken == null) {
-            return redirectToLogin(response);
+            return redirectToLogin(response, "Please log in to continue!");
         }
 
         try {
@@ -48,18 +48,17 @@ public class AuthInterceptor implements HandlerInterceptor {
                         .anyMatch(role -> "ADMIN".equalsIgnoreCase(role.getRole().getName()));
 
                 if (request.getRequestURI().startsWith("/admin") && !isAdmin) {
-                    return redirectToLogin(response);
+                    return redirectToLogin(response, "Please log in to continue!");
                 }
             }
             return true;
         } catch (Exception e) {
             log.error("Invalid access token: {}", e.getMessage());
-            return redirectToLogin(response);
-        }
+            return redirectToLogin(response, "Your session has expired. Please login again.");        }
     }
 
-    private boolean redirectToLogin(HttpServletResponse response) throws IOException {
-        response.sendRedirect("/login?msg=Please log in to continue!");
+    private boolean redirectToLogin(HttpServletResponse response, String msg) throws IOException {
+        response.sendRedirect("/login?msg=" + msg);
         return false;
     }
 }

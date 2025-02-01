@@ -1,6 +1,7 @@
 package org.edu.main.service.auth;
 
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,19 +17,19 @@ import org.edu.main.model.auth.User_Role;
 import org.edu.main.repository.auth.RoleRepository;
 import org.edu.main.repository.auth.UserRepository;
 import org.edu.main.repository.auth.UserRoleRepository;
+import org.edu.main.util.Utils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -42,7 +43,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
-    private final UserService userService;
+    private final Utils utils;
 
     public ResponseEntity<?> REGISTER(RegisterRequest request) {
         if (userRepository.existsByUsername(request.getUsername())) {
@@ -52,7 +53,6 @@ public class AuthService {
         }
 
         User user = User.builder()
-                .fullName(request.getFullName())
                 .email(request.getEmail())
                 .username(request.getUsername())
                 .password(encoder.encode(request.getPassword()))
@@ -69,7 +69,7 @@ public class AuthService {
 
         userRoleRepository.save(userRole);
 
-        return ResponseEntity.ok(ApiResponse.SUCCESS("REGISTER"));
+        return ResponseEntity.ok(ApiResponse.SUCCESS(createdUser));
     }
 
     public ResponseEntity<?> LOGIN(LoginRequest request, HttpServletResponse response) {
@@ -103,7 +103,7 @@ public class AuthService {
                     UserResponse userResponse =
                             new UserResponse(userLogin.getId(), userLogin.getUsername(),
                                     userLogin.getPassword(), userLogin.getFullName(), userLogin.getEmail(),
-                                    userLogin.getImage(), roleResponses);
+                                    userLogin.getImage(), userLogin.getPhoneNumber(), roleResponses);
                     return ResponseEntity.ok(ApiResponse.SUCCESS(
                             new AuthResponse(token, userResponse)));
                 }
@@ -119,5 +119,11 @@ public class AuthService {
         cookie.setPath("/");
         cookie.setMaxAge(0);
         response.addCookie(cookie);
+    }
+
+    public ResponseEntity<?> VERIFY(HttpServletRequest request) {
+        boolean isLogin = utils.accessTokenCheck(request);
+        return isLogin ? ResponseEntity.ok(ApiResponse.SUCCESS(true)) :
+                ResponseEntity.badRequest().body(ApiResponse.ERROR(Map.of("System", "Session has expired")));
     }
 }

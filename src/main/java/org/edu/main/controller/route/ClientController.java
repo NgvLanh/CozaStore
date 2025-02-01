@@ -1,11 +1,18 @@
 package org.edu.main.controller.route;
 
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+import org.edu.main.util.Utils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+
 @Controller
+@RequiredArgsConstructor
 public class ClientController {
+
+    private final Utils utils;
 
     @GetMapping({"/", "/home"})
     public String home(Model model) {
@@ -71,14 +78,22 @@ public class ClientController {
     }
 
     @GetMapping("/login")
-    public String login(Model model) {
+    public String login(Model model, HttpServletRequest request) {
+        boolean isLogin = utils.accessTokenCheck(request);
+        if (isLogin) {
+            return "redirect:/";
+        }
         model.addAttribute("title", "Login");
         model.addAttribute("page", "client/login");
         return "layout/client-layout";
     }
 
     @GetMapping("/register")
-    public String register(Model model) {
+    public String register(Model model, HttpServletRequest request) {
+        boolean isLogin = utils.accessTokenCheck(request);
+        if (isLogin) {
+            return "redirect:/";
+        }
         model.addAttribute("title", "Register");
         model.addAttribute("page", "client/register");
         return "layout/client-layout";

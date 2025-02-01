@@ -1,5 +1,6 @@
 package org.edu.main.service.auth;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.edu.main.dto.response.ApiResponse;
@@ -16,12 +17,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
+
+    private final JwtService jwtService;
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
     private final RolePermissionRepository rolePermissionRepository;
@@ -51,7 +56,8 @@ public class UserService {
                             .collect(Collectors.toList());
 
                     // Tạo UserResponse với danh sách roleResponses
-                    return new UserResponse(user.getId(), user.getUsername(), user.getPassword(), user.getFullName(), user.getEmail(), user.getImage(), roleResponses);
+                    return new UserResponse(user.getId(), user.getUsername(), user.getPassword(), user.getFullName(),
+                            user.getEmail(), user.getImage(), user.getPhoneNumber(), roleResponses);
                 })
                 .collect(Collectors.toList());
 
@@ -70,4 +76,24 @@ public class UserService {
         return null;
     }
 
+    public ResponseEntity<?> PROFILE(HttpServletRequest request) {
+        String accessToken = request.getHeader("cookie").split("=")[1];
+        try {
+            String username = jwtService.extractUsername(accessToken);
+            if (username != null) {
+                Optional<User> user = userRepository.findByUsername(username);
+                if (user.isPresent()) {
+                    UserResponse userResponse = UserResponse.builder()
+                            .fullName(user.get().getFullName())
+                            .email(user.get().getEmail())
+                            .phoneNumber(user.get().getPhoneNumber())
+                            .build();
+                    return ResponseEntity.ok(ApiResponse.SUCCESS(userResponse));
+                }
+            }
+        } catch (Exception e) {
+            log.info("Token is expired!");
+        }
+        return ResponseEntity.ok(ApiResponse.ERROR(Map.of("system", "Token is expired!")));
+    }
 }

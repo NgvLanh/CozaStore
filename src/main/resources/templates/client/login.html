@@ -87,9 +87,10 @@
             const {user} = response.data.data;
             const roles = user.roles || [];
 
-            await swal('Login success', "You have successfully logged in!", "success");
-
-            window.location.href = roles.some(role => role.name.toUpperCase() !== 'CLIENT') ? '/admin' : '/';
+            swal('Login success', "You have successfully logged in!", "success")
+                .then(() => {
+                    window.location.href = roles.some(role => role.name.toUpperCase() !== 'CLIENT') ? '/admin' : '/';
+                });
         } catch (e) {
             console.log(e)
             swal('Login failed', "Username or password is incorrect", "error");

@@ -6,43 +6,105 @@
     </h2>
 </section>
 
-
 <!-- Content page -->
 <section class="bg0 p-t-75 p-b-120">
     <div class="container">
         <div class="row">
-            <div class="order-md-2 col-md-7 col-lg-8 p-b-30">
-                <div class="p-t-7 p-l-85 p-l-15-lg p-l-0-md">
-                    <h3 class="mtext-111 cl2 p-b-16">
-                        Our Mission
-                    </h3>
+            <div class="order-md-2 col-md-8 col-lg-9 p-b-30">
+                <div class="row m-l-20">
+                    <div class="col-md-7 col-lg-8 p-b-30">
+                        <form id="profile-form">
+                            <h4 class="mtext-105 cl2 txt-center p-b-30">
+                                Your Profile
+                            </h4>
 
-                    <p class="stext-113 cl6 p-b-26">
-                        Mauris non lacinia magna. Sed nec lobortis dolor. Vestibulum rhoncus dignissim risus, sed
-                        consectetur erat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac
-                        turpis egestas. Nullam maximus mauris sit amet odio convallis, in pharetra magna gravida.
-                        Praesent sed nunc fermentum mi molestie tempor. Morbi vitae viverra odio. Pellentesque ac velit
-                        egestas, luctus arcu non, laoreet mauris. Sed in ipsum tempor, consequat odio in, porttitor
-                        ante. Ut mauris ligula, volutpat in sodales in, porta non odio. Pellentesque tempor urna vitae
-                        mi vestibulum, nec venenatis nulla lobortis. Proin at gravida ante. Mauris auctor purus at lacus
-                        maximus euismod. Pellentesque vulputate massa ut nisl hendrerit, eget elementum libero iaculis.
-                    </p>
+                            <div class="bor8 m-b-20 how-pos4-parent">
+                                <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="full_name"
+                                       id="full_name" value="">
+                                <img class="how-pos4 pointer-none" src="/client/images/icons/user.png" alt="ICON">
+                            </div>
 
-                    <div class="bor16 p-l-29 p-b-9 m-t-22">
-                        <p class="stext-114 cl6 p-r-40 p-b-11">
-                            Creativity is just connecting things. When you ask creative people how they did something,
-                            they feel a little guilty because they didn't really do it, they just saw something. It
-                            seemed obvious to them after a while.
-                        </p>
+                            <div class="bor8 m-b-20 how-pos4-parent">
+                                <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="email" name="email"
+                                       id="email" value="">
+                                <img class="how-pos4 pointer-none" src="/client/images/icons/mail.png" alt="ICON">
+                            </div>
 
-                        <span class="stext-111 cl8">
-								- Steve Job’s
-							</span>
+                            <div class="bor8 m-b-20 how-pos4-parent">
+                                <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="phone"
+                                       id="phone" value="">
+                                <img class="how-pos4 pointer-none" src="/client/images/icons/mail.png" alt="ICON">
+                            </div>
+
+                            <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer"
+                                    type="submit">
+                                Update Profile
+                            </button>
+                        </form>
+
+                        <form id="address-form" style="display: none;">
+                            <h4 class="mtext-105 cl2 txt-center p-b-30">
+                                Shipping Address
+                            </h4>
+
+                            <div class="bor8 m-b-20 how-pos4-parent">
+                                <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text"
+                                       name="shipping_name"
+                                       id="shipping_name" value="Nguyễn Văn A">
+                                <img class="how-pos4 pointer-none" src="/client/images/icons/user.png" alt="ICON">
+                            </div>
+
+                            <div class="bor8 m-b-20 how-pos4-parent">
+                                <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="email"
+                                       name="shipping_email"
+                                       id="shipping_email" value="nguyenvana@example.com">
+                                <img class="how-pos4 pointer-none" src="/client/images/icons/mail.png" alt="ICON">
+                            </div>
+
+                            <div class="bor8 m-b-20 how-pos4-parent">
+                                <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text"
+                                       name="shipping_phone"
+                                       id="shipping_phone" value="0123 456 789">
+                                <img class="how-pos4 pointer-none" src="/client/images/icons/mail.png" alt="ICON">
+                            </div>
+
+                            <div class="bor8 m-b-20 how-pos4-parent">
+                                <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text"
+                                       name="shipping_address"
+                                       id="shipping_address" value="123 Đường ABC, Quận XYZ">
+                                <img class="how-pos4 pointer-none" src="/client/images/icons/user.png" alt="ICON">
+                            </div>
+
+                            <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer"
+                                    type="submit">
+                                Add Address
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="col-md-5 col-lg-4 m-lr-auto">
+                        <ul class="p-all-12" style="border: solid 3px lightgrey">
+                            <li class="p-b-6">
+                                <a href="javascript:void(0);" class="filter-link stext-106 trans-04" id="profile-link">
+                                    Information
+                                </a>
+                            </li>
+                            <li class="p-b-6">
+                                <a href="javascript:void(0);" class="filter-link stext-106 trans-04" id="shipping-link">
+                                    Shipping Address
+                                </a>
+                            </li>
+                            <li class="p-b-6">
+                                <a onclick="logout()" href="javascript:void(0);" class="filter-link stext-106 trans-04">
+                                    Logout
+                                </a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
 
-            <div class="order-md-1 col-11 col-md-5 col-lg-4 m-lr-auto p-b-30">
+            <div class="order-md-1 col-11 col-md-4 col-lg-3 m-lr-auto p-b-30">
                 <div class="how-bor2">
                     <div class="hov-img0">
                         <img src="/client/images/about-02.jpg" alt="IMG">
@@ -52,3 +114,41 @@
         </div>
     </div>
 </section>
+
+<script>
+    async function logout() {
+        await axios.post('/api/auth/logout').then(() => {
+            window.location.href = '/login';
+        });
+    }
+
+    async function fetchProfile() {
+        try {
+            const response = await axios.get('/api/users/profile');
+            if (response.data?.success) {
+                const user = response.data.data;
+                console.log(user)
+                $('#full_name').val(user?.fullName)
+                $('#email').val(user?.email)
+                $('#phone').val(user?.phoneNumber)
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    }
+
+    fetchProfile();
+
+    $(document).ready(function () {
+
+        $('#profile-link').on('click', function () {
+            $('#address-form').hide();
+            $('#profile-form').show();
+        });
+
+        $('#shipping-link').on('click', function () {
+            $('#profile-form').hide();
+            $('#address-form').show();
+        });
+    });
+</script>
