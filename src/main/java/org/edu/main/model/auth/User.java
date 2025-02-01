@@ -31,6 +31,8 @@ public class User {
 
     String password;
 
+    String phoneNumber;
+
     @OneToMany(mappedBy = "user")
     List<User_Role> roles;
 

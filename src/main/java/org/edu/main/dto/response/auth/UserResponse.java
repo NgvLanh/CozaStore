@@ -23,5 +23,6 @@ public class UserResponse {
     String fullName;
     String email;
     String image;
+    String phoneNumber;
     List<RoleResponse> roles;
 }

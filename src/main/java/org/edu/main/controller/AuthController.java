@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthController {
+
     private final AuthService authService;
 
     @PostMapping("/login")
@@ -32,5 +33,11 @@ public class AuthController {
     @PostMapping("/logout")
     private void LOGOUT(HttpServletResponse response) {
         authService.LOGOUT(response);
+    }
+
+
+    @PostMapping("/verify")
+    private ResponseEntity<?> VERIFY(HttpServletRequest request) {
+        return authService.VERIFY(request);
     }
 }
