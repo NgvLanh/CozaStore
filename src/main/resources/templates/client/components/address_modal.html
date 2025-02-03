@@ -1,0 +1,117 @@
+<!-- address update modal -->
+<div class="wrap-modal1 js-modal1 p-t-60 p-b-20" id="address-modal">
+    <div class="overlay-modal1 js-hide-modal1"></div>
+    <div class="container">
+        <div class="bg0 p-t-30 p-b-30 p-lr-15-lg how-pos3-parent">
+            <button class="how-pos3 hov3 trans-04 js-hide-modal1">
+                <img src="/client/images/icons/icon-close.png" alt="CLOSE"/>
+            </button>
+
+            <div class="row">
+                <div class="col-md-12 p-b-30">
+                    <div class="p-lr-50 p-t-5 p-lr-0-lg">
+                        <h4 class="mtext-105 cl2 js-name-detail p-b-14">Shipping Address</h4>
+                        <form id="address-form">
+                            <input type="hidden" name="form-address-id" id="form-address-id"/>
+
+                            <div class="m-b-20 row">
+                                <div class="col-6">
+                                    <label class="stext-111 cl2">Full Name</label>
+                                    <input class="bor8 size-116 p-l-20 p-r-20" type="text" name="form-address-full_name" id="form-address-full_name" placeholder="Enter your full name" required/>
+                                </div>
+                                <div class="col-6">
+                                    <label class="stext-111 cl2">Phone Number</label>
+                                    <input class="bor8 size-116 p-l-20 p-r-20" type="tel" name="form-address-phone" id="form-address-phone" placeholder="Enter your phone number" required/>
+                                </div>
+                            </div>
+
+                            <div class="m-b-20">
+                                <label class="stext-111 cl2">Province/City</label>
+                                <div class="respon6-next">
+                                    <div class="rs1-select2 bor8 bg0">
+                                        <select class="js-select2" name="form-address-province" id="form-address-province" required>
+                                            <option value="">Select Province/City</option>
+                                            <option value="1">1</option>
+                                        </select>
+                                        <div class="dropDownSelect2"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="m-b-20">
+                                <label class="stext-111 cl2">District</label>
+                                <div class="respon6-next">
+                                    <div class="rs1-select2 bor8 bg0">
+                                        <select class="js-select2" name="form-address-district" id="form-address-district" required>
+                                            <option value="">Select District</option>
+                                            <option value="2">2</option>
+                                        </select>
+                                        <div class="dropDownSelect2"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="m-b-20">
+                                <label class="stext-111 cl2">Ward</label>
+                                <div class="respon6-next">
+                                    <div class="rs1-select2 bor8 bg0">
+                                        <select class="js-select2" name="form-address-ward" id="form-address-ward" required>
+                                            <option value="">Select Ward</option>
+                                            <option value="3">3</option>
+                                        </select>
+                                        <div class="dropDownSelect2"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="m-b-20">
+                                <label class="stext-111 cl2">Detailed Address</label>
+                                <textarea class="bor8 stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25" name="form-address-details" id="form-address-details" placeholder="Enter your address" required></textarea>
+                            </div>
+                            <div class="text-center">
+                                <button type="button" id="save-address" class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#save-address').click(async function () {
+        const formData = {
+            id: $('#form-address-id').val(),
+            fullName: $('#form-address-full_name').val(),
+            phoneNumber: $('#form-address-phone').val(),
+            province: $('#form-address-province').val(),
+            district: $('#form-address-district').val(),
+            ward: $('#form-address-ward').val(),
+            details: $('#form-address-details').val()
+        };
+        if (!formData.fullName || !formData.phoneNumber || !formData.province || !formData.district || !formData.ward || !formData.details) {
+            swal('Save failed', "Please enter all information", "error");
+            return;
+        }
+
+        const phoneRegex = /^\d{10,11}$/;
+        if (!phoneRegex.test(formData.phoneNumber)) {
+            swal('Save failed', "Invalid phone number", "error");
+            return;
+        }
+
+        formData.userId = sessionStorage.getItem('userId') || null;
+        try {
+            const response = await axios.post(`/api/addresses`, formData);
+            if (response.data?.success) {
+                swal('Update success', "Update profile success", "success");
+                await fetchProfile();
+                $('#address-modal').removeClass('show-modal1');
+            }
+        } catch (e) {
+            const msgErrors = error.response?.data?.errors;
+            swal('Update failed', Object.values(msgErrors)[0] || "An error occurred", "error");
+        }
+    });
+</script>

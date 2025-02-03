@@ -14,7 +14,7 @@
                         Help & FAQs
                     </a>
 
-                    <a href="#" class="my-account flex-c-m trans-04 p-lr-25">
+                    <a href="/login" class="my-account flex-c-m trans-04 p-lr-25">
                         My Account
                     </a>
 
@@ -135,7 +135,7 @@
                         Help & FAQs
                     </a>
 
-                    <a href="#" class="my-account flex-c-m p-lr-10 trans-04">
+                    <a href="/login" class="my-account flex-c-m p-lr-10 trans-04">
                         My Account
                     </a>
 
@@ -210,6 +210,7 @@
 
             myAccounts.each((_, acc) => {
                 $(acc).attr('href', isLoggedIn ? '/profile' : '/login');
+                $(acc).text(isLoggedIn && response.data?.data?.fullName)
             });
 
         } catch (error) {
@@ -217,7 +218,7 @@
             myAccounts.each((_, acc) => $(acc).attr('href', '/login'));
         }
     }
-
-    verify();
-
+    if (sessionStorage.getItem('userId')) {
+        verify();
+    }
 </script>

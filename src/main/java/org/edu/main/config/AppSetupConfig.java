@@ -51,9 +51,9 @@ public class AppSetupConfig {
     }
 
     private void createDefaultAdminAccount() {
-        User user = userRepository.findByUsername(ADMIN_USERNAME)
+        User user = userRepository.findByEmail(ADMIN_USERNAME)
                 .orElseGet(() -> userRepository.save(User.builder()
-                        .username(ADMIN_USERNAME)
+                        .email(ADMIN_USERNAME)
                         .password(encoder.encode(ADMIN_PASSWORD))
                         .build()));
         updateAdminRole(user);
@@ -67,6 +67,6 @@ public class AppSetupConfig {
             userRoleRepository.save(User_Role.builder().user(user).role(role).build());
         }
 
-        log.info("*** Admin role assigned to: {}", user.getUsername());
+        log.info("*** Admin role assigned to: {}", user.getEmail());
     }
 }

@@ -42,7 +42,7 @@ public class AuthInterceptor implements HandlerInterceptor {
             String username = jwtService.extractUsername(accessToken);
             log.info("Authenticated user: {}", username);
 
-            Optional<User> user = userRepository.findByUsername(username);
+            Optional<User> user = userRepository.findByEmail(username);
             if (user.isPresent()) {
                 boolean isAdmin = userRoleRepository.findByUserId(user.get().getId()).stream()
                         .anyMatch(role -> "ADMIN".equalsIgnoreCase(role.getRole().getName()));

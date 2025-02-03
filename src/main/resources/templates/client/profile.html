@@ -26,7 +26,7 @@
 
                             <div class="bor8 m-b-20 how-pos4-parent">
                                 <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="email" name="email"
-                                       id="email" value="">
+                                       id="email" value="" readonly>
                                 <img class="how-pos4 pointer-none" src="/client/images/icons/mail.png" alt="ICON">
                             </div>
 
@@ -36,49 +36,50 @@
                                 <img class="how-pos4 pointer-none" src="/client/images/icons/mail.png" alt="ICON">
                             </div>
 
+                            <div class="bor8 m-b-20 how-pos4-parent">
+                                <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30 p-t-11" type="file" name="image"
+                                       accept="image/*"
+                                       id="image" value="">
+                                <img class="how-pos4 pointer-none" src="/client/images/icons/mail.png" alt="ICON">
+                            </div>
+
                             <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer"
                                     type="submit">
                                 Update Profile
                             </button>
                         </form>
-
-                        <form id="address-form" style="display: none;">
-                            <h4 class="mtext-105 cl2 txt-center p-b-30">
-                                Shipping Address
+                        <form id="address-form"
+                              style="display: none; padding: 20px; border: 3px solid lightgrey;">
+                            <h4 class="mtext-105 cl2 txt-center p-b-20 pos-relative">Address
+                                <small class="pos-absolute right-0 top-50 stext-106"
+                                       style="color: #f74877; cursor: pointer; font-weight: 500;"
+                                       onclick="showModalUpdateAddress(0)">
+                                    New
+                                </small>
                             </h4>
+                            <div class="d-flex justify-content-between" style="border-bottom: 1px solid lightgrey">
+                                <div>
+                                    <div class="m-b-2">
+                                        <strong class="stext-111 cl2">Ng Lành</strong> |
+                                        <small class="stext-111 cl2">(+84) 395 420 077</small>
+                                    </div>
+                                    <div class="m-b-15">
+                                        <p class="stext-111 cl2">Nhà Trọ Bình Dân, Khu Dân Cư 30, Lê Bình, Cái Răng, Cần
+                                            Thơ</p>
+                                        <p class="stext-111 cl2">Phường Lê Bình, Quận Cái Răng, Cần Thơ</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <span class="flex-c-m pointer m-b-15" style="color: #717fe0;"
+                                          onclick="showModalUpdateAddress(1)">
+                                        Update
+                                    </span>
 
-                            <div class="bor8 m-b-20 how-pos4-parent">
-                                <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text"
-                                       name="shipping_name"
-                                       id="shipping_name" value="Nguyễn Văn A">
-                                <img class="how-pos4 pointer-none" src="/client/images/icons/user.png" alt="ICON">
+                                    <button class="flex-c-m pointer py-1 px-2" style="border: 2px solid lightgrey">
+                                        Set to default
+                                    </button>
+                                </div>
                             </div>
-
-                            <div class="bor8 m-b-20 how-pos4-parent">
-                                <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="email"
-                                       name="shipping_email"
-                                       id="shipping_email" value="nguyenvana@example.com">
-                                <img class="how-pos4 pointer-none" src="/client/images/icons/mail.png" alt="ICON">
-                            </div>
-
-                            <div class="bor8 m-b-20 how-pos4-parent">
-                                <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text"
-                                       name="shipping_phone"
-                                       id="shipping_phone" value="0123 456 789">
-                                <img class="how-pos4 pointer-none" src="/client/images/icons/mail.png" alt="ICON">
-                            </div>
-
-                            <div class="bor8 m-b-20 how-pos4-parent">
-                                <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text"
-                                       name="shipping_address"
-                                       id="shipping_address" value="123 Đường ABC, Quận XYZ">
-                                <img class="how-pos4 pointer-none" src="/client/images/icons/user.png" alt="ICON">
-                            </div>
-
-                            <button class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer"
-                                    type="submit">
-                                Add Address
-                            </button>
                         </form>
                     </div>
 
@@ -107,7 +108,9 @@
             <div class="order-md-1 col-11 col-md-4 col-lg-3 m-lr-auto p-b-30">
                 <div class="how-bor2">
                     <div class="hov-img0">
-                        <img src="/client/images/about-02.jpg" alt="IMG">
+                        <img src="/client/images/about-02.jpg"
+                             id="img-profile"
+                             alt="IMG">
                     </div>
                 </div>
             </div>
@@ -116,9 +119,16 @@
 </section>
 
 <script>
+
+    function showModalUpdateAddress(id) {
+        $('#address-modal').addClass('show-modal1');
+    }
+
+
     async function logout() {
         await axios.post('/api/auth/logout').then(() => {
             window.location.href = '/login';
+            sessionStorage.clear();
         });
     }
 
@@ -127,10 +137,10 @@
             const response = await axios.get('/api/users/profile');
             if (response.data?.success) {
                 const user = response.data.data;
-                console.log(user)
                 $('#full_name').val(user?.fullName)
                 $('#email').val(user?.email)
                 $('#phone').val(user?.phoneNumber)
+                $('#img-profile').attr('src', user?.image);
             }
         } catch (e) {
             console.error(e);
@@ -151,4 +161,55 @@
             $('#address-form').show();
         });
     });
+
+
+    $('#profile-form').submit(async (e) => {
+        e.preventDefault();
+        const fullName = $('#full_name').val();
+        const phoneNumber = $('#phone').val();
+        const file = $('#image').get(0).files[0];
+
+        if (!fullName || !phoneNumber) {
+            swal('Update failed', "Please enter all information", "error");
+            return;
+        }
+
+        if (!/^(09|03|05|07)\d{8}$/.test(phoneNumber)) {
+            swal('Update failed', "Invalid phone number", "error");
+            return;
+        }
+
+        let base64Image = null;
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = async function (e) {
+                base64Image = e.target.result.split(',')[1];
+                await updateProfile(fullName, phoneNumber, base64Image, file.name);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            await updateProfile(fullName, phoneNumber);
+        }
+    });
+
+    async function updateProfile(fullName, phoneNumber, base64Image = null, fileName) {
+        try {
+            const payload = {fullName, phoneNumber};
+            if (base64Image) {
+                payload.base64Image = base64Image;
+                payload.fileName = fileName;
+            }
+            const userId = sessionStorage.getItem('userId');
+            const response = await axios.patch(`/api/users/${userId}`, payload);
+            if (response.data?.success) {
+                swal('Update success', "Update profile success", "success");
+                await fetchProfile();
+            }
+        } catch (error) {
+            const msgErrors = error.response?.data?.errors;
+            swal('Update failed', Object.values(msgErrors)[0] || "An error occurred", "error");
+        }
+    }
+
+
 </script>

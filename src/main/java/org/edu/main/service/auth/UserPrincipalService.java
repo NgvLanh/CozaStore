@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -24,13 +25,13 @@ public class UserPrincipalService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username).get();
-        if (user == null) {
+        Optional<User> user = userRepository.findByEmail(username);
+        if (user.isEmpty()) {
             log.info("User Not Found!");
             throw new UsernameNotFoundException("User Not Found!");
         }
-        List<User_Role> userRoles = userRoleRepository.findByUserId(user.getId());
+        List<User_Role> userRoles = userRoleRepository.findByUserId(user.get().getId());
 
-        return new UserPrincipal(user, userRoles);
+        return new UserPrincipal(user.get(), userRoles);
     }
 }

@@ -87,6 +87,8 @@
             const {user} = response.data.data;
             const roles = user.roles || [];
 
+            sessionStorage.setItem('userId', user.id);
+
             swal('Login success', "You have successfully logged in!", "success")
                 .then(() => {
                     window.location.href = roles.some(role => role.name.toUpperCase() !== 'CLIENT') ? '/admin' : '/';

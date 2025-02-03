@@ -13,9 +13,6 @@ public class DatabaseConfig {
 
     @Bean
     public DataSource dataSource() {
-        System.out.println("ADMIN_USERNAME: " + dotenv.get("ADMIN_USERNAME"));
-        System.out.println("ADMIN_PASSWORD: " + dotenv.get("ADMIN_PASSWORD"));
-
         return DataSourceBuilder.create()
 //                DB
                 .url(dotenv.get("DB_URL"))

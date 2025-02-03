@@ -17,9 +17,16 @@
                     </h4>
 
                     <div class="bor8 m-b-20 how-pos4-parent">
-                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="username"
-                               id="username"
-                               placeholder="Username">
+                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="full-name"
+                               id="full-name"
+                               placeholder="Full name">
+                        <img class="how-pos4 pointer-none" src="/client/images/icons/user.png" alt="ICON">
+                    </div>
+
+                    <div class="bor8 m-b-20 how-pos4-parent">
+                        <input class="stext-111 cl2 plh3 size-116 p-l-62 p-r-30" type="text" name="phone-number"
+                               id="phone-number"
+                               placeholder="Phone number">
                         <img class="how-pos4 pointer-none" src="/client/images/icons/user.png" alt="ICON">
                     </div>
 
@@ -65,18 +72,24 @@
     $('#register-form').submit(async (e) => {
         e.preventDefault();
 
-        const username = $('#username').val().trim();
+        const fullName = $('#full-name').val().trim();
+        const phoneNumber = $('#phone-number').val().trim();
         const email = $('#email').val().trim();
         const password = $('#password').val().trim();
         const confirmPassword = $('#confirm_password').val().trim();
 
-        if (!username || !email || !password || !confirmPassword) {
+        if (!fullName || !phoneNumber || !email || !password || !confirmPassword) {
             swal('Register failed', "Please enter all required information", "error");
             return;
         }
 
-        if (username.length < 3 || username.length > 20) {
-            swal('Register failed', "Username must be between 3 and 20 characters", "error");
+        if (fullName.length < 3 || fullName.length > 20) {
+            swal('Register failed', "Full name must be between 3 and 20 characters", "error");
+            return;
+        }
+
+        if (!/^(09|03|05|07)\d{8}$/.test(phoneNumber)) {
+            swal('Register failed', "Invalid phone number", "error");
             return;
         }
 
@@ -95,22 +108,22 @@
             return;
         }
 
-        await register(username, email, password);
+        await register(fullName, phoneNumber, email, password);
     });
 
-    const register = async (username, email, password) => {
+
+    const register = async (fullName, phoneNumber, email, password) => {
         try {
-            const response = await axios.post('/api/auth/register', {username, email, password});
+            const response = await axios.post('/api/auth/register', {fullName, phoneNumber, email, password});
             if (response.data?.success) {
                 swal('Success', "Registration successful!", "success")
                     .then(() => {
                         window.location.href = "/login";
                     });
-            } else {
-                swal('Register failed', response.data?.message || "Something went wrong", "error");
             }
         } catch (error) {
-            swal('Register failed', error.response?.data?.message || "An error occurred", "error");
+            const msgErrors = error.response?.data?.errors;
+            swal('Register failed', Object.values(msgErrors)[0] || "An error occurred", "error");
         }
     };
 
