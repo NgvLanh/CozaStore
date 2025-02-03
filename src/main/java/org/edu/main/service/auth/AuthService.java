@@ -46,15 +46,14 @@ public class AuthService {
     private final Utils utils;
 
     public ResponseEntity<?> REGISTER(RegisterRequest request) {
-        if (userRepository.existsByUsername(request.getUsername())) {
-            return ResponseEntity.badRequest().body(ApiResponse.ERROR(Map.of("Username", "Username already exists")));
-        } else if (userRepository.existsByEmail(request.getEmail())) {
-            return ResponseEntity.badRequest().body(ApiResponse.ERROR(Map.of("Email", "Email already exists")));
+        if (userRepository.existsByEmail(request.getEmail())) {
+            return ResponseEntity.badRequest().body(ApiResponse.ERROR(Map.of("email", "Email already exists")));
         }
 
         User user = User.builder()
+                .fullName(request.getFullName())
                 .email(request.getEmail())
-                .username(request.getUsername())
+                .phoneNumber(request.getPhoneNumber())
                 .password(encoder.encode(request.getPassword()))
                 .image(request.getImage())
                 .build();
@@ -78,7 +77,7 @@ public class AuthService {
         if (authentication.isAuthenticated()) {
             Object principal = authentication.getPrincipal();
             if (principal instanceof UserDetails userDetails) {
-                Optional<User> user = userRepository.findByUsername(userDetails.getUsername());
+                Optional<User> user = userRepository.findByEmail(userDetails.getUsername());
                 if (user.isPresent()) {
                     User userLogin = user.get();
                     List<RoleResponse> roleResponses = new ArrayList<>();
@@ -91,7 +90,7 @@ public class AuthService {
                         roleResponses.add(new RoleResponse(userRole.getRole().getId(), userRole.getRole().getName(), permissions));
                     });
 
-                    String token = jwtService.generateToken(userLogin.getUsername(), 5);
+                    String token = jwtService.generateToken(userLogin.getEmail(), 5);
 
                     Cookie cookie = new Cookie("accessToken", token);
                     cookie.setHttpOnly(true);
@@ -101,9 +100,9 @@ public class AuthService {
                     response.addCookie(cookie);
 
                     UserResponse userResponse =
-                            new UserResponse(userLogin.getId(), userLogin.getUsername(),
+                            new UserResponse(userLogin.getId(),
                                     userLogin.getPassword(), userLogin.getFullName(), userLogin.getEmail(),
-                                    userLogin.getImage(), userLogin.getPhoneNumber(), roleResponses);
+                                    userLogin.getImage(), userLogin.getPhoneNumber(), roleResponses, null);
                     return ResponseEntity.ok(ApiResponse.SUCCESS(
                             new AuthResponse(token, userResponse)));
                 }
@@ -123,7 +122,22 @@ public class AuthService {
 
     public ResponseEntity<?> VERIFY(HttpServletRequest request) {
         boolean isLogin = utils.accessTokenCheck(request);
-        return isLogin ? ResponseEntity.ok(ApiResponse.SUCCESS(true)) :
-                ResponseEntity.badRequest().body(ApiResponse.ERROR(Map.of("System", "Session has expired")));
+        if (isLogin) {
+            try {
+                String accessToken = request.getHeader("cookie").split("=")[1];
+                String username = jwtService.extractUsername(accessToken);
+                if (username != null) {
+                    Optional<User> user = userRepository.findByEmail(username);
+                    if (user.isPresent()) {
+                        return ResponseEntity.ok(ApiResponse.SUCCESS(Map.of("fullName", user.get().getFullName())));
+                    }
+                }
+                return ResponseEntity.ok(ApiResponse.ERROR(Map.of("system", "User not found!")));
+            } catch (Exception e) {
+                log.info("Token is expired!");
+                return ResponseEntity.ok(ApiResponse.ERROR(Map.of("system", "Session has expired!")));
+            }
+        }
+        return ResponseEntity.badRequest().body(ApiResponse.ERROR(Map.of("System", "Session has expired")));
     }
 }

@@ -82,7 +82,9 @@
 
 <script>
     async function logout() {
-        await axios.post('/api/auth/logout');
-        window.location.href = '/login';
+        await axios.post('/api/auth/logout').then(() => {
+            window.location.href = '/login';
+            sessionStorage.clear();
+        });
     }
 </script>

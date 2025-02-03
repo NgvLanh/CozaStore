@@ -10,9 +10,9 @@ import org.hibernate.validator.constraints.Length;
 @Data
 public class RegisterRequest {
 
-    @NotBlank(message = "Username cannot be empty")
-    @Length(min = 2, max = 50, message = "Username length must be 2 -> 50 characters")
-    String username;
+    @NotBlank(message = "Full name cannot be empty")
+    @Length(min = 2, max = 50, message = "Full name length must be 2 -> 50 characters")
+    String fullName;
 
     @NotBlank(message = "Password cannot be empty")
     String password;

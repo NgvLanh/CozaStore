@@ -7,6 +7,7 @@ import org.edu.main.repository.auth.UserRoleRepository;
 import org.edu.main.service.auth.JwtService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -16,11 +17,25 @@ public class WebConfig implements WebMvcConfigurer {
     private final JwtService jwtService;
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
+    private final String[] URL = {
+            // api
+            "/api/users/**",
+
+            // route
+            "/admin/**",
+            "/profile/**"
+    };
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AuthInterceptor(jwtService, userRepository, userRoleRepository))
-                .addPathPatterns("/admin/**", "/profile/**")
+                .addPathPatterns(URL)
                 .excludePathPatterns("/login", "/register");
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/uploads/images/**")
+                .addResourceLocations("file:uploads/images/");
     }
 }

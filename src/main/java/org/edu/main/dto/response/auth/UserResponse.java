@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
+import org.edu.main.model.address.Address;
 
 import java.util.List;
 
@@ -17,7 +18,6 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserResponse {
     long id;
-    String username;
     @JsonIgnore
     String password;
     String fullName;
@@ -25,4 +25,5 @@ public class UserResponse {
     String image;
     String phoneNumber;
     List<RoleResponse> roles;
+    List<Address> addresses;
 }

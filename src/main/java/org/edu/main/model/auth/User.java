@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.edu.main.model.address.Address;
 
 import java.util.List;
 
@@ -20,9 +21,6 @@ public class User {
     long id;
 
     @Column(unique = true)
-    String username;
-
-    @Column(unique = true)
     String email;
 
     String fullName;
@@ -36,4 +34,6 @@ public class User {
     @OneToMany(mappedBy = "user")
     List<User_Role> roles;
 
+    @OneToMany(mappedBy = "user")
+    List<Address> addresses;
 }
