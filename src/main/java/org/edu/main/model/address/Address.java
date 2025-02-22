@@ -29,6 +29,9 @@ public class Address {
 
     double shippingFee;
 
+    @Builder.Default
+    boolean defaultAddress = false;
+
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "user_id")

@@ -4,8 +4,8 @@ spring:
 
   thymeleaf:
     cache: false
-#    prefix: classpath:/templates/
-#    suffix: .html
+  #    prefix: classpath:/templates/
+  #    suffix: .html
 
   datasource:
     url: ${DB_URL}
@@ -15,7 +15,10 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-#    show-sql: true
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 
 config:
   admin:
