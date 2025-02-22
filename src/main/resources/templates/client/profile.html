@@ -120,8 +120,11 @@
 
 <script>
 
-    function showModalUpdateAddress(id) {
+    async function showModalUpdateAddress(id) {
         $('#address-modal').addClass('show-modal1');
+        const {fullName, phoneNumber} = await fetchProfile();
+        $('#form-address-full_name').val(fullName);
+        $('#form-address-phone').val(phoneNumber);
     }
 
 
@@ -141,7 +144,9 @@
                 $('#email').val(user?.email)
                 $('#phone').val(user?.phoneNumber)
                 $('#img-profile').attr('src', user?.image);
+                return user;
             }
+
         } catch (e) {
             console.error(e);
         }
