@@ -1,302 +1,310 @@
 <!-- address update modal -->
 <div class="wrap-modal1 js-modal1 p-t-60 p-b-20" id="address-modal">
-  <div class="overlay-modal1 js-hide-modal1"></div>
-  <div class="container">
-    <div class="bg0 p-t-30 p-b-30 p-lr-15-lg how-pos3-parent">
-      <button class="how-pos3 hov3 trans-04 js-hide-modal1">
-        <img src="/client/images/icons/icon-close.png" alt="CLOSE" />
-      </button>
+    <div class="overlay-modal1 js-hide-modal1"></div>
+    <div class="container">
+        <div class="bg0 p-t-30 p-b-30 p-lr-15-lg how-pos3-parent">
+            <button class="how-pos3 hov3 trans-04 js-hide-modal1">
+                <img src="/client/images/icons/icon-close.png" alt="CLOSE"/>
+            </button>
 
-      <div class="row">
-        <div class="col-md-12 p-b-30">
-          <div class="p-lr-50 p-t-5 p-lr-0-lg">
-            <h4 class="mtext-105 cl2 js-name-detail p-b-14">
-              Shipping Address
-            </h4>
-            <form id="address-form">
-              <input
-                type="hidden"
-                name="form-address-id"
-                id="form-address-id"
-              />
+            <div class="row">
+                <div class="col-md-12 p-b-30">
+                    <div class="p-lr-50 p-t-5 p-lr-0-lg">
+                        <h4 class="mtext-105 cl2 js-name-detail p-b-14">
+                            Shipping Address
+                        </h4>
+                        <form id="address-form">
+                            <input
+                                    type="hidden"
+                                    name="form-address-id"
+                                    id="form-address-id"
+                            />
 
-              <div class="m-b-20 row">
-                <div class="col-6">
-                  <label class="stext-111 cl2">Full Name</label>
-                  <input
-                    class="bor8 size-116 p-l-20 p-r-20"
-                    type="text"
-                    name="form-address-full_name"
-                    id="form-address-full_name"
-                    placeholder="Enter your full name"
-                    required
-                  />
-                </div>
-                <div class="col-6">
-                  <label class="stext-111 cl2">Phone Number</label>
-                  <input
-                    class="bor8 size-116 p-l-20 p-r-20"
-                    type="tel"
-                    name="form-address-phone"
-                    id="form-address-phone"
-                    placeholder="Enter your phone number"
-                    required
-                  />
-                </div>
-              </div>
+                            <div class="m-b-20 row">
+                                <div class="col-6">
+                                    <label class="stext-111 cl2">Full Name</label>
+                                    <input
+                                            class="bor8 size-116 p-l-20 p-r-20"
+                                            type="text"
+                                            name="form-address-full_name"
+                                            id="form-address-full_name"
+                                            placeholder="Enter your full name"
+                                            required
+                                    />
+                                </div>
+                                <div class="col-6">
+                                    <label class="stext-111 cl2">Phone Number</label>
+                                    <input
+                                            class="bor8 size-116 p-l-20 p-r-20"
+                                            type="tel"
+                                            name="form-address-phone"
+                                            id="form-address-phone"
+                                            placeholder="Enter your phone number"
+                                            required
+                                    />
+                                </div>
+                            </div>
 
-              <div class="m-b-20">
-                <label class="stext-111 cl2">Province/City</label>
-                <div class="respon6-next">
-                  <div class="rs1-select2 bor8 bg0">
-                    <select
-                      class="js-select2"
-                      name="form-address-province"
-                      id="form-address-province"
-                      required
-                    >
-                      <option value="">Select Province/City</option>
-                    </select>
-                    <div class="dropDownSelect2"></div>
-                  </div>
-                </div>
-              </div>
+                            <div class="m-b-20">
+                                <label class="stext-111 cl2">Province/City</label>
+                                <div class="respon6-next">
+                                    <div class="rs1-select2 bor8 bg0">
+                                        <select
+                                                class="js-select2"
+                                                name="form-address-province"
+                                                id="form-address-province"
+                                                required
+                                        >
+                                            <option value="">Select Province/City</option>
+                                        </select>
+                                        <div class="dropDownSelect2"></div>
+                                    </div>
+                                </div>
+                            </div>
 
-              <div class="m-b-20">
-                <label class="stext-111 cl2">District</label>
-                <div class="respon6-next">
-                  <div class="rs1-select2 bor8 bg0">
-                    <select
-                      class="js-select2"
-                      name="form-address-district"
-                      id="form-address-district"
-                      required
-                    >
-                      <option value="">Select District</option>
-                    </select>
-                    <div class="dropDownSelect2"></div>
-                  </div>
-                </div>
-              </div>
+                            <div class="m-b-20">
+                                <label class="stext-111 cl2">District</label>
+                                <div class="respon6-next">
+                                    <div class="rs1-select2 bor8 bg0">
+                                        <select
+                                                class="js-select2"
+                                                name="form-address-district"
+                                                id="form-address-district"
+                                                required
+                                        >
+                                            <option value="">Select District</option>
+                                        </select>
+                                        <div class="dropDownSelect2"></div>
+                                    </div>
+                                </div>
+                            </div>
 
-              <div class="m-b-20">
-                <label class="stext-111 cl2">Ward</label>
-                <div class="respon6-next">
-                  <div class="rs1-select2 bor8 bg0">
-                    <select
-                      class="js-select2"
-                      name="form-address-ward"
-                      id="form-address-ward"
-                      required
-                    >
-                      <option value="">Select Ward</option>
-                    </select>
-                    <div class="dropDownSelect2"></div>
-                  </div>
-                </div>
-              </div>
+                            <div class="m-b-20">
+                                <label class="stext-111 cl2">Ward</label>
+                                <div class="respon6-next">
+                                    <div class="rs1-select2 bor8 bg0">
+                                        <select
+                                                class="js-select2"
+                                                name="form-address-ward"
+                                                id="form-address-ward"
+                                                required
+                                        >
+                                            <option value="">Select Ward</option>
+                                        </select>
+                                        <div class="dropDownSelect2"></div>
+                                    </div>
+                                </div>
+                            </div>
 
-              <div class="m-b-20 row">
-                <div class="col-12">
-                  <label class="stext-111 cl2">Shipping fee</label>
-                  <input
-                    class="bor8 size-116 p-l-20 p-r-20"
-                    type="text"
-                    name="form-shipping-fee"
-                    id="form-shipping-fee"
-                    placeholder="0đ"
-                    readonly
-                  />
+                            <div class="m-b-20 row">
+                                <div class="col-12">
+                                    <label class="stext-111 cl2">Shipping fee</label>
+                                    <input
+                                            class="bor8 size-116 p-l-20 p-r-20"
+                                            type="text"
+                                            name="form-shipping-fee"
+                                            id="form-shipping-fee"
+                                            placeholder="0đ"
+                                            readonly
+                                    />
+                                </div>
+                            </div>
+                            <div class="m-b-20">
+                                <label class="stext-111 cl2">Detailed Address</label>
+                                <textarea
+                                        class="bor8 stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25"
+                                        name="form-address-details"
+                                        id="form-address-details"
+                                        placeholder="Enter your address"
+                                        required
+                                ></textarea>
+                            </div>
+                            <div class="text-center">
+                                <button
+                                        type="button"
+                                        id="save-address"
+                                        class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer"
+                                >
+                                    Save
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
-              </div>
-              <div class="m-b-20">
-                <label class="stext-111 cl2">Detailed Address</label>
-                <textarea
-                  class="bor8 stext-111 cl2 plh3 size-120 p-lr-28 p-tb-25"
-                  name="form-address-details"
-                  id="form-address-details"
-                  placeholder="Enter your address"
-                  required
-                ></textarea>
-              </div>
-              <div class="text-center">
-                <button
-                  type="button"
-                  id="save-address"
-                  class="flex-c-m stext-101 cl0 size-121 bg3 bor1 hov-btn3 p-lr-15 trans-04 pointer"
-                >
-                  Save
-                </button>
-              </div>
-            </form>
-          </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </div>
 
 <script>
-  const tokenShipping = '498e4765-2862-11ef-8e53-0a00184fe694';
-  const idShop = '192565';
+    const tokenShipping = '498e4765-2862-11ef-8e53-0a00184fe694';
+    const idShop = '192565';
 
-  async function fetchProvinces() {
-    try {
-      const response = await fetch(
-        'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province',
-        {
-          headers: { 'Content-Type': 'application/json', Token: tokenShipping },
+    async function fetchProvinces() {
+        try {
+            const response = await fetch(
+                'https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/province',
+                {
+                    headers: {'Content-Type': 'application/json', Token: tokenShipping},
+                }
+            );
+            const data = await response.json();
+            $.each(data.data, function (index, item) {
+                $('#form-address-province').append(
+                    new Option(item.ProvinceName, item.ProvinceID)
+                );
+            });
+        } catch (error) {
+            console.error('Lỗi khi lấy danh sách tỉnh:', error);
         }
-      );
-      const data = await response.json();
-      $.each(data.data, function (index, item) {
-        $('#form-address-province').append(
-          new Option(item.ProvinceName, item.ProvinceID)
-        );
-      });
-    } catch (error) {
-      console.error('Lỗi khi lấy danh sách tỉnh:', error);
     }
-  }
 
-  fetchProvinces();
+    fetchProvinces();
 
-  $('#form-address-province').change(function (e) {
-    $('#form-address-district').empty();
-    fetchDistricts(e.target.value);
-  });
+    $('#form-address-province').change(function (e) {
+        $('#form-address-district').empty();
+        fetchDistricts(e.target.value);
+    });
 
-  async function fetchDistricts(provinceId) {
-    try {
-      const response = await fetch(
-        `https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=${provinceId}&shop_id=${idShop}`,
-        {
-          headers: { 'Content-Type': 'application/json', Token: tokenShipping },
+    async function fetchDistricts(provinceId) {
+        try {
+            const response = await fetch(
+                `https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=${provinceId}&shop_id=${idShop}`,
+                {
+                    headers: {'Content-Type': 'application/json', Token: tokenShipping},
+                }
+            );
+            const data = await response.json();
+            $.each(data.data, function (index, item) {
+                $('#form-address-district').append(
+                    new Option(item.DistrictName, item.DistrictID)
+                );
+            });
+        } catch (error) {
+            console.error('Lỗi khi lấy danh sách quận huyện:', error);
         }
-      );
-      const data = await response.json();
-      $.each(data.data, function (index, item) {
-        $('#form-address-district').append(
-          new Option(item.DistrictName, item.DistrictID)
-        );
-      });
-    } catch (error) {
-      console.error('Lỗi khi lấy danh sách quận huyện:', error);
     }
-  }
 
-  $('#form-address-district').change(function (e) {
-    $('#form-address-ward').empty();
-    fetchWards(e.target.value);
-  });
+    $('#form-address-district').change(function (e) {
+        $('#form-address-ward').empty();
+        fetchWards(e.target.value);
+    });
 
-  async function fetchWards(districtId) {
-    try {
-      const response = await fetch(
-        `https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=${districtId}&shop_id=${idShop}`,
-        {
-          headers: { 'Content-Type': 'application/json', Token: tokenShipping },
+    async function fetchWards(districtId) {
+        try {
+            const response = await fetch(
+                `https://dev-online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=${districtId}&shop_id=${idShop}`,
+                {
+                    headers: {'Content-Type': 'application/json', Token: tokenShipping},
+                }
+            );
+            const data = await response.json();
+            $.each(data.data, function (index, item) {
+                $('#form-address-ward').append(
+                    new Option(item.WardName, item.WardCode)
+                );
+            });
+            calculateShippingFee();
+        } catch (error) {
+            console.error('Lỗi khi lấy danh sách xã phường:', error);
         }
-      );
-      const data = await response.json();
-      $.each(data.data, function (index, item) {
-        $('#form-address-ward').append(
-          new Option(item.WardName, item.WardCode)
-        );
-      });
-      calculateShippingFee();
-    } catch (error) {
-      console.error('Lỗi khi lấy danh sách xã phường:', error);
     }
-  }
 
-  const calculateShippingFee = () => {
-    const requestData = {
-      from_district_id: 1454,
-      from_ward_code: '21211',
-      service_id: 53320,
-      service_type_id: null,
-      to_district_id: 1452,
-      to_ward_code: '21012',
-      height: 50,
-      length: 20,
-      weight: 200,
-      width: 20,
-      insurance_value: 10000,
-      cod_failed_amount: 2000,
-      coupon: null,
-      items: null,
+    const calculateShippingFee = () => {
+        const requestData = {
+            from_district_id: 1454,
+            from_ward_code: '21211',
+            service_id: 53320,
+            service_type_id: null,
+            to_district_id: 1452,
+            to_ward_code: '21012',
+            height: 50,
+            length: 20,
+            weight: 200,
+            width: 20,
+            insurance_value: 10000,
+            cod_failed_amount: 2000,
+            coupon: null,
+            items: null,
+        };
+
+        fetch(
+            'https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?',
+            {
+                method: 'POST',
+                body: JSON.stringify(requestData),
+                headers: {
+                    'Content-Type': 'application/json',
+                    Token: tokenShipping,
+                    ShopId: idShop,
+                },
+            }
+        )
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.data && data.data.total) {
+                    const total = data.data.total;
+                    if (total) {
+                        $('#form-shipping-fee').val(formatVnCurrency(total));
+                    }
+                }
+            })
+            .catch((error) => {
+                console.error('Lỗi khi tính phí vận chuyển:', error);
+            });
     };
 
-    fetch(
-      'https://dev-online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?',
-      {
-        method: 'POST',
-        body: JSON.stringify(requestData),
-        headers: {
-          'Content-Type': 'application/json',
-          Token: tokenShipping,
-          ShopId: idShop,
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.data && data.data.total) {
-          const total = data.data.total;
-          if (total) {
-            $('#form-shipping-fee').val(formatVnCurrency(total));
-          }
+    $('#save-address').click(async function () {
+        const formData = {
+            id: $('#form-address-id').val(),
+            fullName: $('#form-address-full_name').val(),
+            phoneNumber: $('#form-address-phone').val(),
+            province: $('#form-address-province').val(),
+            district: $('#form-address-district').val(),
+            ward: $('#form-address-ward').val(),
+            details: $('#form-address-details').val(),
+            shippingFee: parseVnCurrency($('#form-shipping-fee').val())
+        };
+        if (
+            !formData.fullName ||
+            !formData.phoneNumber ||
+            !formData.province ||
+            !formData.district ||
+            !formData.ward ||
+            !formData.details
+        ) {
+            swal('Save failed', 'Please enter all information', 'error');
+            return;
         }
-      })
-      .catch((error) => {
-        console.error('Lỗi khi tính phí vận chuyển:', error);
-      });
-  };
 
-  $('#save-address').click(async function () {
-    const formData = {
-      id: $('#form-address-id').val(),
-      fullName: $('#form-address-full_name').val(),
-      phoneNumber: $('#form-address-phone').val(),
-      province: $('#form-address-province').val(),
-      district: $('#form-address-district').val(),
-      ward: $('#form-address-ward').val(),
-      details: $('#form-address-details').val(),
-    };
-    if (
-      !formData.fullName ||
-      !formData.phoneNumber ||
-      !formData.province ||
-      !formData.district ||
-      !formData.ward ||
-      !formData.details
-    ) {
-      swal('Save failed', 'Please enter all information', 'error');
-      return;
-    }
+        const phoneRegex = /^\d{10,11}$/;
+        if (!phoneRegex.test(formData.phoneNumber)) {
+            swal('Save failed', 'Invalid phone number', 'error');
+            return;
+        }
 
-    const phoneRegex = /^\d{10,11}$/;
-    if (!phoneRegex.test(formData.phoneNumber)) {
-      swal('Save failed', 'Invalid phone number', 'error');
-      return;
-    }
+        formData.userId = sessionStorage.getItem('userId') || null;
+        try {
+            const response = await axios.post(`/api/addresses`, formData);
+            if (response.data?.success) {
+                swal('Add success', 'Add address success', 'success');
+                await fetchProfile();
+                $('#address-modal').removeClass('show-modal1');
+                await fetchProvinces();
+                await fetchAddresses();
+                const id = $('form-address-id').val();
+                if (id.length > 0 && id > 0) {
 
-    formData.userId = sessionStorage.getItem('userId') || null;
-    try {
-      const response = await axios.post(`/api/addresses`, formData);
-      if (response.data?.success) {
-        swal('Update success', 'Update profile success', 'success');
-        await fetchProfile();
-        $('#address-modal').removeClass('show-modal1');
-      }
-    } catch (e) {
-      const msgErrors = error.response?.data?.errors;
-      swal(
-        'Update failed',
-        Object.values(msgErrors)[0] || 'An error occurred',
-        'error'
-      );
-    }
-  });
+                }
+            }
+        } catch (e) {
+            const msgErrors = error.response?.data?.errors;
+            swal(
+                'Add failed',
+                Object.values(msgErrors)[0] || 'An error occurred',
+                'error'
+            );
+        }
+    });
+
 </script>

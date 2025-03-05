@@ -4,3 +4,7 @@ const formatVnCurrency = (amount) => {
     currency: 'VND',
   }).format(amount);
 };
+
+const parseVnCurrency = (currencyStr) => {
+  return Number(currencyStr.replace(/[^\d.-]/g, ''));
+};

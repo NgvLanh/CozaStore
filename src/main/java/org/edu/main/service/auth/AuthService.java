@@ -1,10 +1,7 @@
 package org.edu.main.service.auth;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.*;
+
 import org.edu.main.dto.request.auth.LoginRequest;
 import org.edu.main.dto.request.auth.RegisterRequest;
 import org.edu.main.dto.response.ApiResponse;
@@ -22,14 +19,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
@@ -62,8 +60,8 @@ public class AuthService {
 
         User_Role userRole = User_Role.builder()
                 .user(createdUser)
-                .role(roleRepository.findRoleByName("client").orElseGet(() ->
-                        Role.builder().name("client").build()))
+                .role(roleRepository.findRoleByName("client")
+                        .orElseGet(() -> Role.builder().name("client").build()))
                 .build();
 
         userRoleRepository.save(userRole);
@@ -85,9 +83,11 @@ public class AuthService {
                         List<String> permissions = new ArrayList<>();
                         userRole.getRole().getPermissions().forEach(rolePermission -> {
                             permissions.add(rolePermission.getPermission().getName() != null
-                                    ? rolePermission.getPermission().getName() : null);
+                                    ? rolePermission.getPermission().getName()
+                                    : null);
                         });
-                        roleResponses.add(new RoleResponse(userRole.getRole().getId(), userRole.getRole().getName(), permissions));
+                        roleResponses.add(new RoleResponse(userRole.getRole().getId(), userRole.getRole().getName(),
+                                permissions));
                     });
 
                     String token = jwtService.generateToken(userLogin.getEmail(), 5);
@@ -99,10 +99,9 @@ public class AuthService {
                     cookie.setMaxAge(60 * 60);
                     response.addCookie(cookie);
 
-                    UserResponse userResponse =
-                            new UserResponse(userLogin.getId(),
-                                    userLogin.getPassword(), userLogin.getFullName(), userLogin.getEmail(),
-                                    userLogin.getImage(), userLogin.getPhoneNumber(), roleResponses, null);
+                    UserResponse userResponse = new UserResponse(userLogin.getId(),
+                            userLogin.getPassword(), userLogin.getFullName(), userLogin.getEmail(),
+                            userLogin.getImage(), userLogin.getPhoneNumber(), roleResponses, null);
                     return ResponseEntity.ok(ApiResponse.SUCCESS(
                             new AuthResponse(token, userResponse)));
                 }
@@ -124,7 +123,7 @@ public class AuthService {
         boolean isLogin = utils.accessTokenCheck(request);
         if (isLogin) {
             try {
-                String accessToken = request.getHeader("cookie").split("=")[1];
+                String accessToken = utils.extractToken(request);
                 String username = jwtService.extractUsername(accessToken);
                 if (username != null) {
                     Optional<User> user = userRepository.findByEmail(username);
@@ -134,8 +133,8 @@ public class AuthService {
                 }
                 return ResponseEntity.ok(ApiResponse.ERROR(Map.of("system", "User not found!")));
             } catch (Exception e) {
-                log.info("Token is expired!");
-                return ResponseEntity.ok(ApiResponse.ERROR(Map.of("system", "Session has expired!")));
+                log.info(e.getMessage());
+                return ResponseEntity.ok(ApiResponse.ERROR(Map.of("system", e.getMessage())));
             }
         }
         return ResponseEntity.badRequest().body(ApiResponse.ERROR(Map.of("System", "Session has expired")));

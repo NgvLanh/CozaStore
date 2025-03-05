@@ -1,11 +1,11 @@
 package org.edu.main.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
+import io.jsonwebtoken.Jwts;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.edu.main.service.auth.JwtService;
+import org.edu.main.util.Utils;
 
 import java.util.Map;
 
@@ -18,7 +18,6 @@ public class ApiResponse<T> {
     boolean success;
     T data;
     Map<String, String> errors;
-
 
     @Getter
     public enum ApiCode {
@@ -38,7 +37,10 @@ public class ApiResponse<T> {
     }
 
     public static <T> ApiResponse<T> ERROR() {
-        return new ApiResponse<>(ApiCode.CODE_ERROR.getValue(), false, null, Map.of("System","Procedure execution error"));
+        Utils utils = new Utils(new JwtService());
+        return new ApiResponse<>(ApiCode.CODE_ERROR.getValue(), false, null,
+                Map.of(utils.getMessage("key.system"),
+                        utils.getMessage("msg.error.system")));
     }
 
     public static <T> ApiResponse<T> ERROR(Map<String, String> errors) {

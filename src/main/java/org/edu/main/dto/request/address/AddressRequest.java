@@ -29,6 +29,7 @@ public class AddressRequest {
     @NotBlank(message = "Province is required")
     String province;
 
-    @DecimalMin(value = "0.0", message = "Shipping fee must be positive")
+    @NotNull(message = "Shipping fee is required")
+    @Min(value = 0, message = "Shipping fee must be positive")
     double shippingFee;
 }

@@ -31,6 +31,9 @@ public class User {
 
     String phoneNumber;
 
+    @Builder.Default
+    boolean active = true;
+
     @OneToMany(mappedBy = "user")
     List<User_Role> roles;
 
