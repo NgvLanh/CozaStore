@@ -30,6 +30,9 @@ public class Address {
     double shippingFee;
 
     @Builder.Default
+    boolean active = true;
+
+    @Builder.Default
     boolean defaultAddress = false;
 
     @JsonBackReference

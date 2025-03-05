@@ -83,14 +83,16 @@ public class UserService {
                             String imageUrl = utils.base64ToFileName(request.getBase64Image(), request.getFileName());
                             user.setImage(imageUrl);
                         } catch (IOException e) {
-                            return ResponseEntity.ok(ApiResponse.ERROR(Map.of("system", "File upload error!")));
+                            return ResponseEntity.ok(ApiResponse.ERROR(Map.of(utils.getMessage("key.system"),
+                                    utils.getMessage("msg.error.upload"))));
                         }
                     }
                     userRepository.save(user);
                     return ResponseEntity.ok(ApiResponse.SUCCESS(user));
                 })
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(ApiResponse.ERROR(Map.of("system", "User not found!"))));
+                        .body(ApiResponse.ERROR(Map.of(utils.getMessage("key.system"),
+                                utils.getMessage("msg.error.notfound")))));
     }
 
 
@@ -100,7 +102,7 @@ public class UserService {
 
     public ResponseEntity<?> PROFILE(HttpServletRequest request) {
         try {
-            String accessToken = request.getHeader("cookie").split("=")[1];
+            String accessToken = utils.extractToken(request);
             String username = jwtService.extractUsername(accessToken);
             if (username != null) {
                 Optional<User> user = userRepository.findByEmail(username);
@@ -114,10 +116,12 @@ public class UserService {
                     return ResponseEntity.ok(ApiResponse.SUCCESS(userResponse));
                 }
             }
-            return ResponseEntity.ok(ApiResponse.ERROR(Map.of("system", "User not found!")));
+            return ResponseEntity.ok(ApiResponse.ERROR(Map.of(utils.getMessage("key.system"),
+                    utils.getMessage("msg.error.notfound"))));
         } catch (Exception e) {
-            log.info("Token is expired!");
-            return ResponseEntity.ok(ApiResponse.ERROR(Map.of("system", "Token is expired!")));
+            log.info(e.getMessage());
+            return ResponseEntity.ok(ApiResponse.ERROR(Map.of(utils.getMessage("key.system"),
+                    e.getMessage())));
         }
     }
 }

@@ -24,5 +24,3 @@ config:
   admin:
     username: admin@gmail.com
     password: admin
-#    username: ${ADMIN_USERNAME}
-#    password: ${ADMIN_PASSWORD}

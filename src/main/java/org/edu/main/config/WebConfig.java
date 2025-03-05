@@ -23,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
 
             // route
             "/admin/**",
-            "/profile/**"
+//            "/profile/**"
     };
 
     @Override

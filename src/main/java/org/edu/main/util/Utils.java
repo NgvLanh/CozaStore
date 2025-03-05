@@ -1,12 +1,5 @@
 package org.edu.main.util;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
-import org.edu.main.service.auth.JwtService;
-import org.springframework.core.env.Environment;
-import org.springframework.stereotype.Component;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,26 +7,54 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
+import lombok.extern.slf4j.Slf4j;
+import org.edu.main.service.auth.JwtService;
+import org.springframework.stereotype.Component;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
+
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class Utils {
 
     private final JwtService jwtService;
+    private static final ResourceBundle bundle = ResourceBundle.getBundle("msg");
+
 
     public boolean accessTokenCheck(HttpServletRequest request) {
-        String accessToken = Optional.ofNullable(request.getCookies())
-                .flatMap(cookies -> Arrays.stream(cookies)
-                        .filter(cookie -> "accessToken".equals(cookie.getName()))
-                        .findFirst())
-                .map(Cookie::getValue)
-                .orElse(null);
-        try {
-            jwtService.extractUsername(accessToken);
-            return true;
-        } catch (Exception e) {
-            return false;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("accessToken".equals(cookie.getName())) {
+                    try {
+                        jwtService.extractUsername(cookie.getValue());
+                        return true;
+                    } catch (Exception e) {
+                        log.info("AccessToken Check {}", e.getMessage());
+                        return false;
+                    }
+                }
+            }
         }
+        return false;
+    }
+
+    public String extractToken(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if ("accessToken".equals(cookie.getName())) {
+                    log.info("AccessToken Extract {}", cookie.getName());
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
     }
 
     public String base64ToFileName(String base64, String originalFileName) throws IOException {
@@ -56,4 +77,7 @@ public class Utils {
         return "/uploads/images/" + originalFileName;
     }
 
+    public String getMessage(String key) {
+        return bundle.getString(key);
+    }
 }
