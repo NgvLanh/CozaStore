@@ -94,7 +94,7 @@
                                 <small
                                         class="pos-absolute right-0 top-50 stext-106"
                                         style="color: #f74877; cursor: pointer; font-weight: 500"
-                                        onclick="showModalUpdateAddress(0)"
+                                        onclick="showModalUpdateAddress(null)"
                                 >
                                     New
                                 </small>
@@ -155,11 +155,63 @@
 </section>
 
 <script>
-    async function showModalUpdateAddress(id) {
+    async function showModalUpdateAddress(e) {
         $('#address-modal').addClass('show-modal1');
-        const {fullName, phoneNumber} = await fetchProfile();
-        $('#form-address-full_name').val(fullName);
-        $('#form-address-phone').val(phoneNumber);
+        if (e === null) {
+            const {fullName, phoneNumber} = await fetchProfile();
+            $('#form-address-full_name').val(fullName);
+            $('#form-address-phone').val(phoneNumber);
+        } else {
+            const address = JSON.parse(e.getAttribute('data-address'));
+            $('#form-address-id').val(address.id);
+            $('#form-address-full_name').val(address.fullName);
+            $('#form-address-phone').val(address.phoneNumber);
+            await fetchProvinces();
+            while (true) {
+                $('#form-address-province').val(address.province.split("_")[0]).change();
+                if ($('#form-address-province').val() !== '') {
+                    break;
+                }
+            }
+            await fetchDistricts(address.province.split("_")[0])
+            while (true) {
+                $('#form-address-district').val(address.district.split("_")[0]).change();
+                if ($('#form-address-district').val() !== '') {
+                    break;
+                }
+            }
+            await fetchWards(address.district.split("_")[0]);
+            while (true) {
+                $('#form-address-ward').val(address.ward.split("_")[0]).change();
+                if ($('#form-address-ward').val() !== '') {
+                    break;
+                }
+            }
+            await calculateShippingFee();
+            $('#form-address-details').val(address.details);
+        }
+
+    }
+
+    async function setDefaultAddress(e) {
+        const address = JSON.parse(e.getAttribute('data-address'));
+        try {
+            const response = await axios.patch(`/api/addresses/${address.id}`, {
+                userId: sessionStorage.getItem('userId'),
+                defaultAddress: true
+            });
+            if (response.data?.success) {
+                await fetchAddresses();
+                swal('Update success', 'Set default address success', 'success');
+            }
+        } catch (error) {
+            const msgErrors = error.response?.data?.errors;
+            swal(
+                'Add failed',
+                Object.values(msgErrors)[0] || 'An error occurred',
+                'error'
+            );
+        }
     }
 
     async function logout() {
@@ -170,6 +222,11 @@
     }
 
     async function fetchProfile() {
+        const display = sessionStorage.getItem('profile') || null
+        if (display) {
+            $('#profile-form').hide();
+            $('#address-form').show();
+        }
         try {
             const response = await axios.get('/api/users/profile');
             if (response.data?.success) {
@@ -192,9 +249,10 @@
             if (response.data?.success) {
                 const addressList = $('#list-addresses');
                 addressList.empty();
-                const addresses = response.data?.data?.sort((a, b) => b.defaultAddress - a.defaultAddress);
-                addresses.forEach(address => {
-                    addressList.append(`
+                const addresses = response.data?.data?.sort((a, b) => b.defaultAddress - a.defaultAddress) || [];
+                if (addresses.length > 0) {
+                    addresses.forEach((address) => {
+                        addressList.append(`
                     <div id="address-item" class="d-flex justify-content-between mb-1">
                         <div class="d-flex flex-col">
                           <div class="m-b-2">
@@ -203,19 +261,23 @@
                             </div>
                             <div class="m-b-15">
                                 <p class="stext-111 cl2">${address.details}</p>
-                                <p class="stext-111 cl2">${address.ward}, ${address.district}, ${address.province}</p>
+                                <p class="stext-111 cl2">${address.ward.split("_")[1]}, ${address.district.split("_")[1]}, ${address.province.split("_")[1]}</p>
                             </div>
                         </div>
                         <div>
                           <span
                             class="flex-c-m pointer m-b-15"
                             style="color: #717fe0"
-                            onclick="showModalUpdateAddress(${address.id})"
+                            data-address='${JSON.stringify(address)}'
+                            onclick="showModalUpdateAddress(this)"
                           >
                             Update
                           </span>
 
                           <button
+                              type="button"
+                              data-address='${JSON.stringify(address)}'
+                              onclick="setDefaultAddress(this)"
                                 class="flex-c-m pointer py-1 px-2"
                                 style="${!address.defaultAddress ? 'border: 2px solid lightgray' : ''}"
                                 ${address.defaultAddress ? 'disabled' : ''}
@@ -224,7 +286,22 @@
                             </button>
                         </div>
                       </div>`);
-                });
+                    });
+                } else {
+                    addressList.append(`
+                        <div id="address-item" class="d-flex mb-1">
+                            <div style="
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                width: 100%;
+                                cursor: pointer;
+                              ">
+                              <h3 onclick="showModalUpdateAddress(null)">+ New address</h3>
+                            </div>
+                        </div>
+                    `);
+                }
             }
         } catch (e) {
             console.error(e);
@@ -236,11 +313,13 @@
 
     $(document).ready(function () {
         $('#profile-link').on('click', function () {
+            sessionStorage.removeItem('profile');
             $('#address-form').hide();
             $('#profile-form').show();
         });
 
         $('#shipping-link').on('click', function () {
+            sessionStorage.setItem('profile', 'shipping-address');
             $('#profile-form').hide();
             $('#address-form').show();
         });

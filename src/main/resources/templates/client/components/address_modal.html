@@ -259,9 +259,9 @@
             id: $('#form-address-id').val(),
             fullName: $('#form-address-full_name').val(),
             phoneNumber: $('#form-address-phone').val(),
-            province: $('#form-address-province').val(),
-            district: $('#form-address-district').val(),
-            ward: $('#form-address-ward').val(),
+            province: $('#form-address-province').val() + "_" + $('#form-address-province option:selected').text(),
+            district: $('#form-address-district').val() + "_" + $('#form-address-district option:selected').text(),
+            ward: $('#form-address-ward').val() + "_" + $('#form-address-ward option:selected').text(),
             details: $('#form-address-details').val(),
             shippingFee: parseVnCurrency($('#form-shipping-fee').val())
         };
@@ -285,19 +285,20 @@
 
         formData.userId = sessionStorage.getItem('userId') || null;
         try {
-            const response = await axios.post(`/api/addresses`, formData);
+            const response = formData.id !== '' ?
+                await axios.patch(`/api/addresses/${formData.id}`, formData)
+                : await axios.post(`/api/addresses`, formData);
+            console.log(response.data);
             if (response.data?.success) {
                 swal('Add success', 'Add address success', 'success');
                 await fetchProfile();
                 $('#address-modal').removeClass('show-modal1');
                 await fetchProvinces();
                 await fetchAddresses();
-                const id = $('form-address-id').val();
-                if (id.length > 0 && id > 0) {
-
-                }
+                $('#form-shipping-fee').clear();
+                $('#form-address-details').clear();
             }
-        } catch (e) {
+        } catch (error) {
             const msgErrors = error.response?.data?.errors;
             swal(
                 'Add failed',
