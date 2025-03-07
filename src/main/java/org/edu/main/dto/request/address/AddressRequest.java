@@ -29,6 +29,8 @@ public class AddressRequest {
     @NotBlank(message = "Province is required")
     String province;
 
+    Boolean defaultAddress;
+
     @NotNull(message = "Shipping fee is required")
     @Min(value = 0, message = "Shipping fee must be positive")
     double shippingFee;
