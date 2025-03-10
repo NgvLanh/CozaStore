@@ -167,26 +167,11 @@
             $('#form-address-full_name').val(address.fullName);
             $('#form-address-phone').val(address.phoneNumber);
             await fetchProvinces();
-            while (true) {
-                $('#form-address-province').val(address.province.split("_")[0]).change();
-                if ($('#form-address-province').val() !== '') {
-                    break;
-                }
-            }
+            $('#form-address-province').val(address.province.split("_")[0]).change();
             await fetchDistricts(address.province.split("_")[0])
-            while (true) {
-                $('#form-address-district').val(address.district.split("_")[0]).change();
-                if ($('#form-address-district').val() !== '') {
-                    break;
-                }
-            }
+            $('#form-address-district').val(address.district.split("_")[0]).change();
             await fetchWards(address.district.split("_")[0]);
-            while (true) {
-                $('#form-address-ward').val(address.ward.split("_")[0]).change();
-                if ($('#form-address-ward').val() !== '') {
-                    break;
-                }
-            }
+            $('#form-address-ward').val(address.ward.split("_")[0]).change();
             await calculateShippingFee();
             $('#form-address-details').val(address.details);
         }

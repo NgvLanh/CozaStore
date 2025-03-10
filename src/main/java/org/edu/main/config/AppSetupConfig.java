@@ -2,12 +2,12 @@ package org.edu.main.config;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.edu.main.model.auth.Role;
-import org.edu.main.model.auth.User;
-import org.edu.main.model.auth.User_Role;
-import org.edu.main.repository.auth.RoleRepository;
-import org.edu.main.repository.auth.UserRepository;
-import org.edu.main.repository.auth.UserRoleRepository;
+import org.edu.main.model.Role;
+import org.edu.main.model.User;
+import org.edu.main.model.User_Role;
+import org.edu.main.repository.RoleRepository;
+import org.edu.main.repository.UserRepository;
+import org.edu.main.repository.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Bean;

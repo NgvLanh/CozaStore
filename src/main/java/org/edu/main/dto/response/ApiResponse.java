@@ -1,10 +1,9 @@
 package org.edu.main.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import io.jsonwebtoken.Jwts;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.edu.main.service.auth.JwtService;
+import org.edu.main.service.JwtService;
 import org.edu.main.util.Utils;
 
 import java.util.Map;

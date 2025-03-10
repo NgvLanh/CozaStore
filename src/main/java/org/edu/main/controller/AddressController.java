@@ -1,8 +1,7 @@
 package org.edu.main.controller;
 
 import org.edu.main.dto.request.address.AddressRequest;
-import org.edu.main.service.address.AddressService;
-import org.springframework.data.domain.Pageable;
+import org.edu.main.service.AddressService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;

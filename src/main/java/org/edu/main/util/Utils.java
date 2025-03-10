@@ -4,13 +4,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Base64;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 import lombok.extern.slf4j.Slf4j;
-import org.edu.main.service.auth.JwtService;
+import org.edu.main.service.JwtService;
 import org.springframework.stereotype.Component;
 
 import jakarta.servlet.http.Cookie;

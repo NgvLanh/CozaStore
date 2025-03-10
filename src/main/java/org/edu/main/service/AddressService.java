@@ -1,4 +1,4 @@
-package org.edu.main.service.address;
+package org.edu.main.service;
 
 import java.util.List;
 import java.util.Map;
@@ -6,12 +6,11 @@ import java.util.Optional;
 
 import org.edu.main.dto.request.address.AddressRequest;
 import org.edu.main.dto.response.ApiResponse;
-import org.edu.main.model.address.Address;
-import org.edu.main.model.auth.User;
-import org.edu.main.repository.address.AddressRepository;
-import org.edu.main.repository.auth.UserRepository;
+import org.edu.main.model.Address;
+import org.edu.main.model.User;
+import org.edu.main.repository.AddressRepository;
+import org.edu.main.repository.UserRepository;
 import org.edu.main.util.Utils;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
