@@ -130,7 +130,6 @@
     [ Isotope ]*/
     var $topeContainer = $('.isotope-grid');
     var $filter = $('.filter-tope-group');
-
     // filter items on button click
     $filter.each(function () {
         $filter.on('click', 'button', function () {

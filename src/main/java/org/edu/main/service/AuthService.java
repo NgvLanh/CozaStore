@@ -2,12 +2,12 @@ package org.edu.main.service;
 
 import java.util.*;
 
-import org.edu.main.dto.request.auth.LoginRequest;
-import org.edu.main.dto.request.auth.RegisterRequest;
+import org.edu.main.dto.request.LoginRequest;
+import org.edu.main.dto.request.RegisterRequest;
 import org.edu.main.dto.response.ApiResponse;
-import org.edu.main.dto.response.auth.AuthResponse;
-import org.edu.main.dto.response.auth.RoleResponse;
-import org.edu.main.dto.response.auth.UserResponse;
+import org.edu.main.dto.response.AuthResponse;
+import org.edu.main.dto.response.RoleResponse;
+import org.edu.main.dto.response.UserResponse;
 import org.edu.main.model.Role;
 import org.edu.main.model.User;
 import org.edu.main.model.User_Role;

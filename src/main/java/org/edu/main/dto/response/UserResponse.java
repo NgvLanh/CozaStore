@@ -1,4 +1,4 @@
-package org.edu.main.dto.response.auth;
+package org.edu.main.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;

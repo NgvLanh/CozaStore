@@ -8,7 +8,7 @@
 </section>
 
 <script>
-    async function fetchBanner() {
+    async function fetchSlide() {
         try {
             const response = await axios.get('/api/banners');
             const data = response.data?.data || [];
@@ -48,7 +48,7 @@
         }
     }
 
-    fetchBanner();
+    fetchSlide();
     // window.location.reload();
 </script>
 

@@ -1,6 +1,6 @@
 package org.edu.main.controller;
 
-import org.edu.main.dto.request.address.AddressRequest;
+import org.edu.main.dto.request.AddressRequest;
 import org.edu.main.service.AddressService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
