@@ -4,10 +4,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
 
-import org.edu.main.model.auth.User;
-import org.edu.main.repository.auth.UserRepository;
-import org.edu.main.repository.auth.UserRoleRepository;
-import org.edu.main.service.auth.JwtService;
+import org.edu.main.model.User;
+import org.edu.main.repository.UserRepository;
+import org.edu.main.repository.UserRoleRepository;
+import org.edu.main.service.JwtService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 

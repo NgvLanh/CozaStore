@@ -1,4 +1,4 @@
-package org.edu.main.service.auth;
+package org.edu.main.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;

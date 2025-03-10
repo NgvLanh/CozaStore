@@ -1,6 +1,6 @@
-package org.edu.main.repository.auth;
+package org.edu.main.repository;
 
-import org.edu.main.model.auth.Role;
+import org.edu.main.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

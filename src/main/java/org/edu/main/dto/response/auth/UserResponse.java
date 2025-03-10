@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.FieldDefaults;
-import org.edu.main.model.address.Address;
+import org.edu.main.model.Address;
 
 import java.util.List;
 

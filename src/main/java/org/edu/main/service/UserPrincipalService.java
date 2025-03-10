@@ -1,12 +1,12 @@
-package org.edu.main.service.auth;
+package org.edu.main.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.edu.main.model.auth.User;
-import org.edu.main.model.auth.UserPrincipal;
-import org.edu.main.model.auth.User_Role;
-import org.edu.main.repository.auth.UserRepository;
-import org.edu.main.repository.auth.UserRoleRepository;
+import org.edu.main.model.User;
+import org.edu.main.model.UserPrincipal;
+import org.edu.main.model.User_Role;
+import org.edu.main.repository.UserRepository;
+import org.edu.main.repository.UserRoleRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

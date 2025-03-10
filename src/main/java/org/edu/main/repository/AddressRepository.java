@@ -1,6 +1,6 @@
-package org.edu.main.repository.address;
+package org.edu.main.repository;
 
-import org.edu.main.model.address.Address;
+import org.edu.main.model.Address;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

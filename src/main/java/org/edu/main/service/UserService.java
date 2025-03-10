@@ -1,4 +1,4 @@
-package org.edu.main.service.auth;
+package org.edu.main.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -7,13 +7,13 @@ import org.edu.main.dto.request.user.UserRequest;
 import org.edu.main.dto.response.ApiResponse;
 import org.edu.main.dto.response.auth.RoleResponse;
 import org.edu.main.dto.response.auth.UserResponse;
-import org.edu.main.model.auth.Role;
-import org.edu.main.model.auth.Role_Permission;
-import org.edu.main.model.auth.User;
-import org.edu.main.model.auth.User_Role;
-import org.edu.main.repository.auth.RolePermissionRepository;
-import org.edu.main.repository.auth.UserRepository;
-import org.edu.main.repository.auth.UserRoleRepository;
+import org.edu.main.model.Role;
+import org.edu.main.model.Role_Permission;
+import org.edu.main.model.User;
+import org.edu.main.model.User_Role;
+import org.edu.main.repository.RolePermissionRepository;
+import org.edu.main.repository.UserRepository;
+import org.edu.main.repository.UserRoleRepository;
 import org.edu.main.util.Utils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

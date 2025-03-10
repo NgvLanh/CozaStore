@@ -1,28 +1,24 @@
-package org.edu.main.model.auth;
+package org.edu.main.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
-
-@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity(name = "roles")
-public class Role {
+@Entity(name = "permissions")
+public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
-
     @Column(unique = true)
     String name;
-
-    @OneToMany(mappedBy = "role")
-    List<Role_Permission> permissions;
 
     public String getName() {
         return name.toUpperCase();

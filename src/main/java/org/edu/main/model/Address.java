@@ -1,10 +1,9 @@
-package org.edu.main.model.address;
+package org.edu.main.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.edu.main.model.auth.User;
 
 @Data
 @Builder

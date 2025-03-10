@@ -1,10 +1,9 @@
-package org.edu.main.model.auth;
+package org.edu.main.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.edu.main.model.address.Address;
 
 import java.util.List;
 

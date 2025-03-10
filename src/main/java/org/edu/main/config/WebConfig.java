@@ -2,9 +2,9 @@ package org.edu.main.config;
 
 import lombok.RequiredArgsConstructor;
 import org.edu.main.interceptor.AuthInterceptor;
-import org.edu.main.repository.auth.UserRepository;
-import org.edu.main.repository.auth.UserRoleRepository;
-import org.edu.main.service.auth.JwtService;
+import org.edu.main.repository.UserRepository;
+import org.edu.main.repository.UserRoleRepository;
+import org.edu.main.service.JwtService;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
@@ -23,7 +23,7 @@ public class WebConfig implements WebMvcConfigurer {
 
             // route
             "/admin/**",
-//            "/profile/**"
+            "/profile/**"
     };
 
     @Override
