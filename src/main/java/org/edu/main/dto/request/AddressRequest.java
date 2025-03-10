@@ -1,4 +1,4 @@
-package org.edu.main.dto.request.address;
+package org.edu.main.dto.request;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;

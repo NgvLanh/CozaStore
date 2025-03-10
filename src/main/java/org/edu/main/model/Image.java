@@ -9,17 +9,21 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity(name = "category_product")
-public class CategoryProduct {
+@Entity(name = "images")
+public class Image {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
 
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    Category category;
+    String filePath;
+
+    int position;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
     Product product;
+
+    @ManyToOne
+    @JoinColumn(name = "sku_id")
+    Sku sku;
 }

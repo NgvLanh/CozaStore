@@ -3,7 +3,7 @@ package org.edu.main.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.edu.main.dto.request.user.UserRequest;
+import org.edu.main.dto.request.UserRequest;
 import org.edu.main.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

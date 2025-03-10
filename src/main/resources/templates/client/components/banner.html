@@ -8,7 +8,7 @@
 </div>
 
 <script>
-    async function fetchCategory() {
+    async function fetchBanner() {
         try {
             const response = await axios.get('/api/categories');
             let data = response.data?.data || [];
@@ -52,6 +52,6 @@
         }
     }
 
-    fetchCategory();
+    fetchBanner();
 </script>
 

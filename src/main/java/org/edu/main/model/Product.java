@@ -23,6 +23,13 @@ public class Product {
 
     String slug;
 
+    @Builder.Default
+    boolean active = true;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    Category category;
+
     public void setSlug() {
         String normalized = Normalizer.normalize(this.name, Normalizer.Form.NFD);
         this.slug = normalized.replaceAll("\\p{M}", "")

@@ -1,4 +1,4 @@
-package org.edu.main.dto.request.user;
+package org.edu.main.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;

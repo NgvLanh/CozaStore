@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import org.edu.main.dto.request.address.AddressRequest;
+import org.edu.main.dto.request.AddressRequest;
 import org.edu.main.dto.response.ApiResponse;
 import org.edu.main.model.Address;
 import org.edu.main.model.User;
