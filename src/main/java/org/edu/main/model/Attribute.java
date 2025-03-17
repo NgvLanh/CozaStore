@@ -5,15 +5,11 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity(name = "attributes") // (Thuộc tính biến thể)
-public class Attribute {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+public class Attribute extends BaseModel {
 
     @Column(unique = true)
     String name;

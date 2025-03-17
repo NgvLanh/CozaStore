@@ -4,17 +4,15 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity(name = "addresses")
-public class Address {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+public class Address extends BaseModel {
 
     String fullName;
 
@@ -27,9 +25,6 @@ public class Address {
     String province;
 
     double shippingFee;
-
-    @Builder.Default
-    boolean active = true;
 
     @Builder.Default
     boolean defaultAddress = false;

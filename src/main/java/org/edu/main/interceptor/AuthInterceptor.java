@@ -6,7 +6,6 @@ import java.util.Optional;
 
 import org.edu.main.model.User;
 import org.edu.main.repository.UserRepository;
-import org.edu.main.repository.UserRoleRepository;
 import org.edu.main.service.JwtService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -24,7 +23,6 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     private final JwtService jwtService;
     private final UserRepository userRepository;
-    private final UserRoleRepository userRoleRepository;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
@@ -46,8 +44,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
             Optional<User> user = userRepository.findByEmail(username);
             if (user.isPresent()) {
-                boolean isAdmin = userRoleRepository.findByUserId(user.get().getId()).stream()
-                        .anyMatch(role -> "ADMIN".equalsIgnoreCase(role.getRole().getName()));
+                boolean isAdmin = user.get().getRole().getName().equalsIgnoreCase("ADMIN");
 
                 if (request.getRequestURI().startsWith("/admin") && !isAdmin) {
                     return redirectToLogin(response, "Please log in to continue!");

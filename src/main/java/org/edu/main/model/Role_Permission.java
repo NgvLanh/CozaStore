@@ -13,11 +13,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity(name = "role_permissions")
-public class Role_Permission {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+public class Role_Permission extends BaseModel {
 
     @ManyToOne
     @JoinColumn(name = "permission_id")

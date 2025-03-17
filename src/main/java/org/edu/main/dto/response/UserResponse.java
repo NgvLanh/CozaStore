@@ -10,20 +10,17 @@ import lombok.experimental.FieldDefaults;
 import org.edu.main.model.Address;
 
 import java.util.List;
+import java.util.Objects;
 
 @Data
 @Builder
-@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserResponse {
     long id;
-    @JsonIgnore
-    String password;
     String fullName;
     String email;
     String image;
     String phoneNumber;
-    List<RoleResponse> roles;
-    List<Address> addresses;
+    String role;
 }

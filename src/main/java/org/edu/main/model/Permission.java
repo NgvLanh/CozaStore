@@ -12,15 +12,8 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity(name = "permissions")
-public class Permission {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+public class Permission extends BaseModel {
 
     @Column(unique = true)
     String name;
-
-    public String getName() {
-        return name.toUpperCase();
-    }
 }

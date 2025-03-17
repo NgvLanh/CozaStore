@@ -3,21 +3,20 @@ package org.edu.main.model;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 @Data
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity(name = "images")
-public class Image {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+public class Image extends BaseModel {
 
     String filePath;
 
-    int position;
+    @Builder.Default
+    boolean main = false;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

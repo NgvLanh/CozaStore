@@ -6,14 +6,10 @@ import org.edu.main.dto.request.LoginRequest;
 import org.edu.main.dto.request.RegisterRequest;
 import org.edu.main.dto.response.ApiResponse;
 import org.edu.main.dto.response.AuthResponse;
-import org.edu.main.dto.response.RoleResponse;
-import org.edu.main.dto.response.UserResponse;
 import org.edu.main.model.Role;
 import org.edu.main.model.User;
-import org.edu.main.model.User_Role;
 import org.edu.main.repository.RoleRepository;
 import org.edu.main.repository.UserRepository;
-import org.edu.main.repository.UserRoleRepository;
 import org.edu.main.util.Utils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -37,7 +33,6 @@ public class AuthService {
     private final JwtService jwtService;
     private final RoleRepository roleRepository;
     private final UserRepository userRepository;
-    private final UserRoleRepository userRoleRepository;
     private final AuthenticationManager authenticationManager;
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
@@ -47,25 +42,17 @@ public class AuthService {
         if (userRepository.existsByEmail(request.getEmail())) {
             return ResponseEntity.badRequest().body(ApiResponse.ERROR(Map.of("email", "Email already exists")));
         }
-
+        Role role = roleRepository.findById(request.getRoleId()).orElse(null);
         User user = User.builder()
                 .fullName(request.getFullName())
                 .email(request.getEmail())
                 .phoneNumber(request.getPhoneNumber())
                 .password(encoder.encode(request.getPassword()))
                 .image(request.getImage())
+                .role(role)
                 .build();
 
         User createdUser = userRepository.save(user);
-
-        User_Role userRole = User_Role.builder()
-                .user(createdUser)
-                .role(roleRepository.findRoleByName("client")
-                        .orElseGet(() -> Role.builder().name("client").build()))
-                .build();
-
-        userRoleRepository.save(userRole);
-
         return ResponseEntity.ok(ApiResponse.SUCCESS(createdUser));
     }
 
@@ -78,18 +65,6 @@ public class AuthService {
                 Optional<User> user = userRepository.findByEmail(userDetails.getUsername());
                 if (user.isPresent()) {
                     User userLogin = user.get();
-                    List<RoleResponse> roleResponses = new ArrayList<>();
-                    userLogin.getRoles().forEach(userRole -> {
-                        List<String> permissions = new ArrayList<>();
-                        userRole.getRole().getPermissions().forEach(rolePermission -> {
-                            permissions.add(rolePermission.getPermission().getName() != null
-                                    ? rolePermission.getPermission().getName()
-                                    : null);
-                        });
-                        roleResponses.add(new RoleResponse(userRole.getRole().getId(), userRole.getRole().getName(),
-                                permissions));
-                    });
-
                     String token = jwtService.generateToken(userLogin.getEmail(), 5);
 
                     Cookie cookie = new Cookie("accessToken", token);
@@ -99,11 +74,8 @@ public class AuthService {
                     cookie.setMaxAge(60 * 60);
                     response.addCookie(cookie);
 
-                    UserResponse userResponse = new UserResponse(userLogin.getId(),
-                            userLogin.getPassword(), userLogin.getFullName(), userLogin.getEmail(),
-                            userLogin.getImage(), userLogin.getPhoneNumber(), roleResponses, null);
-                    return ResponseEntity.ok(ApiResponse.SUCCESS(
-                            new AuthResponse(token, userResponse)));
+                    return ResponseEntity.ok(ApiResponse
+                            .SUCCESS(new AuthResponse(token, userRepository.findUser(userLogin.getId()))));
                 }
             }
         }
