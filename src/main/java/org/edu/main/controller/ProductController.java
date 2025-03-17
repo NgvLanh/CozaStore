@@ -14,8 +14,13 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    private ResponseEntity<?> GET(Pageable pageable) {
-        return productService.GETS(pageable);
+    private ResponseEntity<?> getProducts(Pageable pageable) {
+        return productService.getProducts(pageable);
+    }
+
+    @GetMapping("/{id}")
+    private ResponseEntity<?> getProductDetails(@PathVariable Long id) {
+        return productService.getProductDetails(id);
     }
 
 }

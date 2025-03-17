@@ -180,7 +180,7 @@
                 customPaging: function (slick, index) {
                     var portrait = $(slick.$slides[index]).data('thumb');
                     return (
-                        '<img src="/client/' + portrait + '"/><div class="slick3-dot-overlay"></div>'
+                        '<img src="' + portrait + '"/><div class="slick3-dot-overlay"></div>'
                     );
                 },
             });

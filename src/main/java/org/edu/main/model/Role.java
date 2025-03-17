@@ -3,20 +3,17 @@ package org.edu.main.model;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
-@Builder
 @Data
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity(name = "roles")
-public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
-
+public class Role extends BaseModel{
 
     @Column(unique = true)
     String name;
@@ -24,7 +21,4 @@ public class Role {
     @OneToMany(mappedBy = "role")
     List<Role_Permission> permissions;
 
-    public String getName() {
-        return name.toUpperCase();
-    }
 }

@@ -8,23 +8,16 @@ import java.text.Normalizer;
 import java.util.Locale;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity(name = "products") // (Sản phẩm gốc)
-public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+public class Product extends BaseModel {
 
     @Column(unique = true)
     String name;
-
     String slug;
-
-    @Builder.Default
-    boolean active = true;
+    String description;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

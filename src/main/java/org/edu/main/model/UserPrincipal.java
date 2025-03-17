@@ -13,18 +13,17 @@ import java.util.stream.Collectors;
 public class UserPrincipal implements UserDetails {
 
     private final User user;
-    private final List<User_Role> userRoles;
 
-    public UserPrincipal(User user, List<User_Role> userRoles) {
+    public UserPrincipal(User user) {
         this.user = user;
-        this.userRoles = userRoles;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return userRoles.stream()
-                .map(userRole -> new SimpleGrantedAuthority(userRole.getRole().getName()))
-                .collect(Collectors.toList());
+        String roleName = (user.getRole() == null || user.getRole().getName() == null)
+                ? "CLIENT"
+                : user.getRole().getName();
+        return List.of(new SimpleGrantedAuthority("ROLE_" + roleName));
     }
 
 
