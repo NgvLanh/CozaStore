@@ -11,10 +11,12 @@ import lombok.experimental.FieldDefaults;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductDetailsResponse {
+    Long skuId;
     String name;
-    double minPrice;
-    double maxPrice;
     String description;
+    String code;
+    Double price;
+    Integer stock;
+    String attributes;
     String images;
-    Object attributes;
 }

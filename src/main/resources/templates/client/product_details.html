@@ -29,6 +29,10 @@
                         <!-- render desc -->
                     </p>
 
+                    <p class="stext-102 cl3 p-t-23" id="product-details-stock">
+                        <!-- render stock -->
+                    </p>
+
                     <!--  -->
                     <div class="p-t-33" id="attributes-container">
                         <div class="flex-w flex-r-m p-b-10">
@@ -649,74 +653,278 @@
     async function fetchProductDetails() {
         const urlParams = new URLSearchParams(window.location.search);
         const productId = urlParams.get("product_id") || null;
-        if (productId === null) window.location.href = '/product';
+        if (!productId) window.location.href = '/product';
+
         try {
             const response = await axios.get(`/api/products/${productId}`);
-            const data = response.data?.data;
-            const attributes = data.attributes;
-            if (!data) return;
-            const images = data.images.split(',').map(i => i.trim()).filter(i => i);
+            const products = response.data?.data;
+            if (!products) return;
 
-            $('#product-details-name').text(data.name);
-            $('#product-details-price').text(
-                data.minPrice !== data.maxPrice
-                    ? `${formatVnCurrency(data.minPrice)} - ${formatVnCurrency(data.maxPrice)}`
-                    : formatVnCurrency(data.minPrice)
-            );
-            $('#product-details-desc').text(data.description);
+            const firstProduct = products[0];
+            const images = firstProduct.images.split(',').map(i => i.trim()).filter(i => i);
+
+            $('#product-details-name').text(firstProduct.name);
+            $('#product-details-price').text(firstProduct.price.toLocaleString() + " VNĐ");
+            $('#product-details-desc').text(firstProduct.description);
+            $('#product-details-stock').text(firstProduct.stock > 0 ? `Còn ${firstProduct.stock} sản phẩm` : "Hết hàng");
+
             $('#product-images, .slick3-dots').empty();
             $('#attributes-container').empty();
-            Object.entries(attributes).forEach(([key, values]) => {
-                let html = `<div style="margin-bottom: 15px;">
-                                <span style="font-weight: bold; font-size: 16px;">${key}:</span>
-                                <div style="display: flex; gap: 15px; margin-top: 5px;">`;
-
-                values.forEach(value => {
-                    let inputId = `${key}-${value}`;
-                    html += `<label for="${inputId}" style="cursor: pointer; display: flex; align-items: center; gap: 5px;
-                                padding: 8px 12px; border: 2px solid #ccc; border-radius: 8px; transition: 0.3s;">
-                                <input type="radio" name="${key}" id="${inputId}" value="${value}" style="transform: scale(1.2);">
-                                ${value}
-                             </label>`;
-                });
-
-                html += `</div></div>`;
-                $('#attributes-container').append(html);
-            });
-
-            $('input[type="radio"]').on('change', function() {
-                let selectedAttributes = {};
-                $('input[type="radio"]:checked').each(function() {
-                    let name = $(this).attr('name');
-                    let value = $(this).val();
-                    selectedAttributes[name] = value;
-                });
-
-                console.log("Thuộc tính đã chọn:", selectedAttributes);
-            });
 
             images.forEach(image => {
                 $('#product-images').append(`
-                <div class="item-slick3" data-thumb="${image}">
-                    <div class="wrap-pic-w pos-relative">
-                        <img src="${image}" alt="IMG-PRODUCT">
-                        <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="${image}">
-                            <i class="fa fa-expand"></i>
-                        </a>
-                    </div>
+            <div class="item-slick3" data-thumb="${image}">
+                <div class="wrap-pic-w pos-relative">
+                    <img src="${image}" alt="IMG-PRODUCT">
+                    <a class="flex-c-m size-108 how-pos1 bor0 fs-16 cl10 bg0 hov-btn3 trans-04" href="${image}">
+                        <i class="fa fa-expand"></i>
+                    </a>
                 </div>
-            `);
+            </div>
+        `);
                 $('.slick3-dots').append(`
-                <li class="slick" role="presentation">
-                    <img src="${image}">
-                    <div class="slick3-dot-overlay"></div>
-                </li>
-            `);
+            <li class="slick" role="presentation">
+                <img src="${image}">
+                <div class="slick3-dot-overlay"></div>
+            </li>
+        `);
             });
+
+            // Lưu trữ sản phẩm trong biến toàn cục
+            window.productsList = products;
+
+            // Phân tích thuộc tính sản phẩm và hiển thị dưới dạng radio buttons
+            renderAttributesAsRadioButtons(products);
+
         } catch (error) {
             window.location.href = '/product';
-            console.error('Error fetching product details:', error);
         }
     }
+
+    function renderAttributesAsRadioButtons(products) {
+        // Lấy tất cả thuộc tính từ danh sách sản phẩm
+        let attributeMap = {};
+        let attributeOrder = [];
+
+        products.forEach(product => {
+            let attributes = JSON.parse(product.attributes);
+            attributes.forEach(attr => {
+                if (!attributeMap[attr.attribute]) {
+                    attributeMap[attr.attribute] = new Set();
+                    attributeOrder.push(attr.attribute);
+                }
+                attributeMap[attr.attribute].add(attr.value);
+            });
+        });
+
+        // Loại bỏ các thuộc tính trùng lặp trong attributeOrder
+        attributeOrder = [...new Set(attributeOrder)];
+
+        // Thêm CSS cho radio buttons với chủ đạo màu xanh
+        $('head').append(`
+    <style>
+        .radio-container {
+            display: inline-block;
+            margin-right: 10px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .radio-button {
+            display: inline-block;
+            padding: 8px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background-color: #fff;
+            min-width: 50px;
+            text-align: center;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .radio-container input:checked + .radio-button {
+            border-color: #717fe0;
+            background-color: #f0f8ff;
+            color: #717fe0;
+            font-weight: 500;
+            box-shadow: 0 0 0 2px rgba(0,102,204,0.2);
+            transform: translateY(-1px);
+        }
+
+        .radio-button:hover {
+            border-color: #99ccff;
+            box-shadow: 0 2px 5px rgba(0,102,204,0.1);
+        }
+
+        .radio-container.disabled .radio-button {
+            opacity: 0.5;
+            cursor: not-allowed;
+            background-color: #f5f5f5;
+            color: #999;
+            border-color: #e0e0e0;
+            box-shadow: none;
+        }
+
+        .radio-container input:focus + .radio-button {
+            outline: none;
+            border-color: #717fe0;
+            box-shadow: 0 0 0 3px rgba(0,102,204,0.2);
+        }
+    </style>
+    `);
+
+        // Hiển thị các nhóm thuộc tính theo thứ tự
+        attributeOrder.forEach((attributeName, index) => {
+            let options = [...attributeMap[attributeName]].map(value => `
+        <label class="radio-container">
+            <input type="radio" name="${attributeName}" value="${value}" class="attribute-radio"
+                data-attribute="${attributeName}" data-value="${value}" style="display: none;">
+            <span class="radio-button">${value}</span>
+        </label>
+    `).join("");
+
+            $('#attributes-container').append(`
+        <div class="attribute-group" data-attribute="${attributeName}" data-index="${index}" style="
+            margin-bottom: 20px;
+        ">
+            <h4 style="
+                margin-bottom: 10px;
+                font-size: 16px;
+                color: #333;
+                font-weight: 500;
+            ">${attributeName}</h4>
+            <div class="radio-group" style="display: flex; flex-wrap: wrap;">
+                ${options}
+            </div>
+        </div>
+    `);
+        });
+
+        // Thêm event listener cho radio buttons
+        $('.attribute-radio').change(function() {
+            const attributeName = $(this).data('attribute');
+            const value = $(this).data('value');
+            const groupIndex = $(this).closest('.attribute-group').data('index');
+
+            // Đánh dấu radio button này được chọn
+            $(this).closest('.radio-container').siblings().find('input').prop('checked', false);
+            $(this).prop('checked', true);
+
+            // Reset các lựa chọn cho các nhóm thuộc tính phía sau
+            resetSubsequentGroups(groupIndex);
+
+            // Cập nhật các tùy chọn có sẵn cho các thuộc tính tiếp theo
+            updateAvailableOptions();
+        });
+    }
+
+    function resetSubsequentGroups(currentIndex) {
+        $('.attribute-group').each(function() {
+            const groupIndex = parseInt($(this).data('index'));
+
+            // Chỉ reset các nhóm có index lớn hơn nhóm hiện tại
+            if (groupIndex > currentIndex) {
+                $(this).find('.attribute-radio').prop('checked', false);
+                $(this).find('.radio-container').removeClass('disabled');
+                $(this).find('.attribute-radio').prop('disabled', false);
+            }
+        });
+    }
+
+    function updateAvailableOptions() {
+        // Lấy tất cả thuộc tính đã chọn cho đến thời điểm hiện tại
+        let selectedAttributes = {};
+        $('.attribute-radio:checked').each(function() {
+            let attr = $(this).data('attribute');
+            let value = $(this).data('value');
+            selectedAttributes[attr] = value;
+        });
+
+        // Lọc ra các sản phẩm phù hợp với các thuộc tính đã chọn
+        const attributeNames = Object.keys(selectedAttributes);
+        const filteredProducts = window.productsList.filter(product => {
+            const productAttrs = JSON.parse(product.attributes);
+            return attributeNames.every(attrName => {
+                const attrObj = productAttrs.find(a => a.attribute === attrName);
+                return attrObj && attrObj.value === selectedAttributes[attrName];
+            });
+        });
+
+        // Lấy danh sách các nhóm thuộc tính theo thứ tự
+        const attributeGroups = $('.attribute-group').toArray().sort((a, b) => {
+            return parseInt($(a).data('index')) - parseInt($(b).data('index'));
+        });
+
+        // Bật/tắt các tùy chọn cho từng nhóm thuộc tính
+        attributeGroups.forEach((group, index) => {
+            const $group = $(group);
+            const groupAttrName = $group.data('attribute');
+
+            // Bỏ qua nếu nhóm này đã được chọn
+            if (selectedAttributes[groupAttrName]) return;
+
+            // Tìm các giá trị hợp lệ cho nhóm thuộc tính này dựa trên các sản phẩm đã lọc
+            const validValues = new Set();
+            filteredProducts.forEach(product => {
+                const productAttrs = JSON.parse(product.attributes);
+                const attr = productAttrs.find(a => a.attribute === groupAttrName);
+                if (attr && product.stock > 0) {
+                    validValues.add(attr.value);
+                }
+            });
+
+            // Cập nhật trạng thái disabled cho các radio buttons
+            $group.find('.radio-container').each(function() {
+                const value = $(this).find('.attribute-radio').data('value');
+                if (validValues.has(value)) {
+                    $(this).removeClass('disabled');
+                    $(this).find('.attribute-radio').prop('disabled', false);
+                } else {
+                    $(this).addClass('disabled');
+                    $(this).find('.attribute-radio').prop('disabled', true);
+                }
+            });
+        });
+
+        // Cập nhật thông tin sản phẩm dựa trên các lựa chọn hiện tại
+        const selectedRadios = $('.attribute-radio:checked').length;
+        const totalGroups = $('.attribute-group').length;
+
+        if (selectedRadios === totalGroups) {
+            // Đã chọn đủ tất cả thuộc tính
+            updateProductInfo(selectedAttributes);
+        } else {
+            // Chưa chọn đủ thuộc tính
+            $('#product-details-stock').text("Vui lòng chọn đầy đủ các tùy chọn");
+            $('#add-to-cart-btn').prop('disabled', true).css('opacity', '0.5');
+        }
+    }
+
+    function updateProductInfo(selectedAttributes) {
+        // Tìm sản phẩm phù hợp với các thuộc tính đã chọn
+        let matchedSKU = window.productsList.find(product => {
+            let attributes = JSON.parse(product.attributes);
+            return attributes.every(attr => selectedAttributes[attr.attribute] === attr.value);
+        });
+
+        if (matchedSKU) {
+            $('#product-details-price').text(matchedSKU.price.toLocaleString() + " VNĐ");
+            $('#product-details-stock').text(matchedSKU.stock > 0 ? `Còn ${matchedSKU.stock} sản phẩm` : "Hết hàng");
+
+            // Kích hoạt nút "Thêm vào giỏ hàng" nếu sản phẩm còn hàng
+            if (matchedSKU.stock > 0) {
+                $('#add-to-cart-btn').prop('disabled', false).css('opacity', '1');
+            } else {
+                $('#add-to-cart-btn').prop('disabled', true).css('opacity', '0.5');
+            }
+        } else {
+            $('#product-details-stock').text("Không có hàng cho lựa chọn này");
+            $('#add-to-cart-btn').prop('disabled', true).css('opacity', '0.5');
+        }
+    }
+
     fetchProductDetails();
 </script>
