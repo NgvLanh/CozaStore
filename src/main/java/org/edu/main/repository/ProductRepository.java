@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findByActiveTrue(Pageable pageable);
@@ -31,20 +33,22 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<ProductResponse> getProducts(Pageable pageable);
 
     @Query(value = """
-                select p.id, p.name, 
-                       min(s.price) as min_price, 
-                       max(s.price) as max_price, 
-                       p.description,
-                       group_concat(distinct i.file_path separator ', ') as images,
-                       json_arrayagg(json_object('attribute', a.name, 'value', ao.value)) as attributes
-                from products p
-                inner join skus s on p.id = s.product_id
-                left join attribute_option_sku aos on s.id = aos.sku_id
-                left join attribute_options ao on aos.attribute_option_id = ao.id
-                left join attributes a on a.id = ao.attribute_id
-                left join images i on i.product_id = p.id
-                where p.id = ?1
-                group by p.id, p.name, p.description
+            SELECT s.id AS sku_id,
+                   p.name,
+                   p.description,
+                   s.code,
+                   s.price,
+                   s.stock,
+                   JSON_ARRAYAGG(JSON_OBJECT('attribute', a.name, 'value', ao.value)) AS attributes,
+                   GROUP_CONCAT(DISTINCT i.file_path SEPARATOR ', ') AS images
+            FROM skus s
+            JOIN attribute_option_sku aos ON s.id = aos.sku_id
+            JOIN attribute_options ao ON aos.attribute_option_id = ao.id
+            JOIN attributes a ON ao.attribute_id = a.id
+            JOIN products p ON s.product_id = p.id
+            LEFT JOIN images i ON i.product_id = p.id
+            WHERE s.product_id = ?1
+            GROUP BY s.id
             """, nativeQuery = true)
-    Object getProductDetails(long productId);
+    List<ProductDetailsResponse> getProductDetails(long productId);
 }

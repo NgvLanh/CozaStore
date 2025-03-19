@@ -34,42 +34,10 @@ public class ProductService {
     }
 
     public ResponseEntity<?> getProductDetails(Long id) {
-        Object productDetails = productRepository.getProductDetails(id);
-        if (productDetails != null) {
-            Object[] row = (Object[]) productDetails;
-            Map<String, Set<String>> attributesMap = parseAttributes((String) row[6]);
-            System.out.println(attributesMap);
-            return ResponseEntity.ok(ApiResponse.SUCCESS(
-                    new ProductDetailsResponse(
-                            (String) row[1],
-                            ((Number) row[2]).doubleValue(),
-                            ((Number) row[3]).doubleValue(),
-                            (String) row[4],
-                            (String) row[5],
-                            attributesMap
-                    )
-            ));
+        List<ProductDetailsResponse> productDetailsList  = productRepository.getProductDetails(id);
+        if (productDetailsList == null || productDetailsList.isEmpty()) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
-    }
-
-    private Map<String, Set<String>> parseAttributes(String jsonString) {
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            List<Map<String, String>> attributesList = objectMapper.readValue(jsonString, new TypeReference<>() {});
-
-            Map<String, Set<String>> attributesMap = new HashMap<>();
-            for (Map<String, String> attr : attributesList) {
-                String key = attr.get("attribute");
-                String value = attr.get("value");
-
-                if (key != null) {
-                    attributesMap.computeIfAbsent(key, k -> new HashSet<>()).add(value);
-                }
-            }
-            return attributesMap;
-        } catch (Exception e) {
-            return Collections.emptyMap();
-        }
+        return ResponseEntity.ok(ApiResponse.SUCCESS(productDetailsList));
     }
 }
