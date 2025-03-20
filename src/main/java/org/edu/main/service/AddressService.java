@@ -73,7 +73,7 @@ public class AddressService {
         address.setWard(request.getWard() != null ? request.getWard() : address.getWard());
         address.setDistrict(request.getDistrict() != null ? request.getDistrict() : address.getDistrict());
         address.setProvince(request.getProvince() != null ? request.getProvince() : address.getProvince());
-        address.setDefaultAddress(request.getDefaultAddress() != null ? request.getDefaultAddress() : address.isDefaultAddress());
+        address.setDefaultAddress(request.getDefaultAddress() != null ? request.getDefaultAddress() : address.getDefaultAddress());
         address.setShippingFee(request.getShippingFee() >= 0 ? request.getShippingFee() : address.getShippingFee());
 
         addressRepository.save(address);

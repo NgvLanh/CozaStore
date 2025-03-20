@@ -1796,11 +1796,14 @@ button.mfp-close {
 /*//////////////////////////////////////////////////////////////////
 [ Num Product ]*/
 .wrap-num-product {
+  display: flex !important;
+  justify-content: space-between;
+  align-content: center;
   width: 140px;
   height: 45px;
   border: 1px solid #e6e6e6;
   border-radius: 3px;
-  overflow: hidden;
+  /*overflow: hidden;*/
 }
 
 .btn-num-product-up,

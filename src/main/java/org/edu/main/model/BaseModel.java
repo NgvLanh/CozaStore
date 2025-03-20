@@ -21,10 +21,10 @@ public class BaseModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    long id;
+    Long id;
 
     @Builder.Default
-    boolean active = true;
+    Boolean active = true;
 
     @CreatedDate
     @Column(updatable = false)

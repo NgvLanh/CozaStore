@@ -32,69 +32,36 @@
                     <p class="stext-102 cl3 p-t-23" id="product-details-stock">
                         <!-- render stock -->
                     </p>
-
-                    <!--  -->
-                    <div class="p-t-33" id="attributes-container">
-                        <div class="flex-w flex-r-m p-b-10">
-                            <div class="size-203 flex-c-m respon6">
-                                Size
-                            </div>
-
-                            <div class="size-204 respon6-next">
-                                <div class="rs1-select2 bor8 bg0">
-                                    <label>
-                                        <select class="js-select2" name="time">
-                                            <option>Choose an option</option>
-                                            <option>Size S</option>
-                                            <option>Size M</option>
-                                            <option>Size L</option>
-                                            <option>Size XL</option>
-                                        </select>
-                                    </label>
-                                    <div class="dropDownSelect2"></div>
-                                </div>
-                            </div>
+                    <div>
+                        <div class="p-t-33" id="attributes-container">
+                            <!-- render attributes  -->
                         </div>
-
-                        <div class="flex-w flex-r-m p-b-10">
-                            <div class="size-203 flex-c-m respon6">
-                                Color
-                            </div>
-
-                            <div class="size-204 respon6-next">
-                                <div class="rs1-select2 bor8 bg0">
-                                    <label>
-                                        <select class="js-select2" name="time">
-                                            <option>Choose an option</option>
-                                            <option>Red</option>
-                                            <option>Blue</option>
-                                            <option>White</option>
-                                            <option>Grey</option>
-                                        </select>
-                                    </label>
-                                    <div class="dropDownSelect2"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="flex-w flex-r-m p-b-10">
-                            <div class="size-204 flex-w flex-m respon6-next">
-                                <div class="wrap-num-product flex-w m-r-20 m-tb-10">
+                        <div>
+                            <div class="w-100 flex-w flex-m respon6-next" style="column-gap: 4px">
+                                <div class="wrap-num-product">
                                     <div class="btn-num-product-down cl8 hov-btn3 trans-04 flex-c-m">
                                         <i class="fs-16 zmdi zmdi-minus"></i>
                                     </div>
 
-                                    <label>
-                                        <input class="mtext-104 cl3 txt-center num-product" type="number"
-                                               name="num-product" value="1">
-                                    </label>
+                                    <input class="mtext-104 cl3 txt-center num-product"
+                                           type="number"
+                                           name="num-product"
+                                           id="cart-product-quantity"
+                                           value="1"
+                                           oninput="
+                                            this.value = this.value && !isNaN(this.value) && this.value > 0 ? this.value : 1;
+                                           "
+                                    />
 
                                     <div class="btn-num-product-up cl8 hov-btn3 trans-04 flex-c-m">
                                         <i class="fs-16 zmdi zmdi-plus"></i>
                                     </div>
                                 </div>
 
-                                <button class="flex-c-m stext-101 cl0 size-101 bg1 bor1 hov-btn1 p-lr-15 trans-04 js-addcart-detail">
+                                <button class="flex-c-m stext-101 cl0 size-101 bg1 bor3 hov-btn1 p-lr-15 trans-04"
+                                        style="border-radius: 4px; opacity: 0.5"
+                                        disabled
+                                        id="add-to-cart-btn">
                                     Add to cart
                                 </button>
                             </div>
@@ -804,7 +771,7 @@
         });
 
         // Thêm event listener cho radio buttons
-        $('.attribute-radio').change(function() {
+        $('.attribute-radio').change(function () {
             const attributeName = $(this).data('attribute');
             const value = $(this).data('value');
             const groupIndex = $(this).closest('.attribute-group').data('index');
@@ -822,7 +789,7 @@
     }
 
     function resetSubsequentGroups(currentIndex) {
-        $('.attribute-group').each(function() {
+        $('.attribute-group').each(function () {
             const groupIndex = parseInt($(this).data('index'));
 
             // Chỉ reset các nhóm có index lớn hơn nhóm hiện tại
@@ -837,7 +804,7 @@
     function updateAvailableOptions() {
         // Lấy tất cả thuộc tính đã chọn cho đến thời điểm hiện tại
         let selectedAttributes = {};
-        $('.attribute-radio:checked').each(function() {
+        $('.attribute-radio:checked').each(function () {
             let attr = $(this).data('attribute');
             let value = $(this).data('value');
             selectedAttributes[attr] = value;
@@ -877,7 +844,7 @@
             });
 
             // Cập nhật trạng thái disabled cho các radio buttons
-            $group.find('.radio-container').each(function() {
+            $group.find('.radio-container').each(function () {
                 const value = $(this).find('.attribute-radio').data('value');
                 if (validValues.has(value)) {
                     $(this).removeClass('disabled');
@@ -909,14 +876,17 @@
             let attributes = JSON.parse(product.attributes);
             return attributes.every(attr => selectedAttributes[attr.attribute] === attr.value);
         });
-
+    
         if (matchedSKU) {
             $('#product-details-price').text(matchedSKU.price.toLocaleString() + " VNĐ");
             $('#product-details-stock').text(matchedSKU.stock > 0 ? `Còn ${matchedSKU.stock} sản phẩm` : "Hết hàng");
 
             // Kích hoạt nút "Thêm vào giỏ hàng" nếu sản phẩm còn hàng
             if (matchedSKU.stock > 0) {
-                $('#add-to-cart-btn').prop('disabled', false).css('opacity', '1');
+                $('#add-to-cart-btn')
+                    .prop('disabled', false)
+                    .css('opacity', '1')
+                    .data('sku-id', matchedSKU.skuId); // Set the SKU ID as data attribute
             } else {
                 $('#add-to-cart-btn').prop('disabled', true).css('opacity', '0.5');
             }
@@ -925,6 +895,22 @@
             $('#add-to-cart-btn').prop('disabled', true).css('opacity', '0.5');
         }
     }
+
+    $('#add-to-cart-btn').click(function () {
+        const userId = sessionStorage.getItem('userId') || null;
+        if (!userId) {
+            swal('Lỗi', 'Vui lòng đăng nhập để tiếp tục', 'error');
+        }
+        const skuId = $(this).data('sku-id');
+        const quantity = parseInt($('#cart-product-quantity').val(), 10);
+
+        if (!skuId || quantity <= 0) {
+            swal('Lỗi', 'Vui lòng chọn sản phẩm và số lượng hợp lệ', 'error');
+            return;
+        }
+
+        swal('Thêm vào giỏ', `Thêm thành công sản phẩm SKU: ${skuId} - Số lượng: ${quantity}`, 'success');
+    });
 
     fetchProductDetails();
 </script>

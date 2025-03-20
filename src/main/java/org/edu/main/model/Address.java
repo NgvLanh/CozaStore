@@ -24,10 +24,10 @@ public class Address extends BaseModel {
     String district;
     String province;
 
-    double shippingFee;
+    Double shippingFee;
 
     @Builder.Default
-    boolean defaultAddress = false;
+    Boolean defaultAddress = false;
 
     @JsonBackReference
     @ManyToOne

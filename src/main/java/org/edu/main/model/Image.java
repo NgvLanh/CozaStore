@@ -16,7 +16,7 @@ public class Image extends BaseModel {
     String filePath;
 
     @Builder.Default
-    boolean main = false;
+    Boolean main = false;
 
     @ManyToOne
     @JoinColumn(name = "product_id")
