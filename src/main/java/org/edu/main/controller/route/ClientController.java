@@ -58,7 +58,7 @@ public class ClientController {
 
     @GetMapping("/product-details")
     public String productDetails(Model model) {
-        model.addAttribute("title", "Blogs");
+        model.addAttribute("title", "Product Details");
         model.addAttribute("page", "client/product_details");
         return "layout/client-layout";
     }

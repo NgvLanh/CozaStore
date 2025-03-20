@@ -6,8 +6,10 @@ import org.edu.main.dto.request.LoginRequest;
 import org.edu.main.dto.request.RegisterRequest;
 import org.edu.main.dto.response.ApiResponse;
 import org.edu.main.dto.response.AuthResponse;
+import org.edu.main.model.Cart;
 import org.edu.main.model.Role;
 import org.edu.main.model.User;
+import org.edu.main.repository.CartRepository;
 import org.edu.main.repository.RoleRepository;
 import org.edu.main.repository.UserRepository;
 import org.edu.main.util.Utils;
@@ -37,6 +39,7 @@ public class AuthService {
 
     private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
     private final Utils utils;
+    private final CartRepository cartRepository;
 
     public ResponseEntity<?> REGISTER(RegisterRequest request) {
         if (userRepository.existsByEmail(request.getEmail())) {
@@ -51,7 +54,8 @@ public class AuthService {
                 .image(request.getImage())
                 .role(role)
                 .build();
-
+        Cart cart = Cart.builder().user(user).build();
+        cartRepository.save(cart);
         User createdUser = userRepository.save(user);
         return ResponseEntity.ok(ApiResponse.SUCCESS(createdUser));
     }
